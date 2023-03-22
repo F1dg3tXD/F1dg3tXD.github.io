@@ -1,0 +1,87 @@
+body{
+    background-color: #4a4848;
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+    /* Rion Williams Stack Overflow */
+    /* https://stackoverflow.com/questions/4617872/white-space-showing-up-on-right-side-of-page-when-background-image-should-extend */
+}
+#title {
+    font-family: 'Roboto Slab', serif;
+    color: red;
+    opacity: 1;
+    text-align: center;
+    margin-top: 10px;
+    margin-left: 50%;
+    font-size: 90px;
+
+}
+
+
+/*STICKY MAGIC!!!!!*/
+
+img{
+    width: 50%;
+    position: sticky;
+    top: 50px;
+}
+
+div.imageContainer{
+    position: relative;
+    left: 50%;
+}
+
+#img0 {
+  z-index: 8;
+}
+
+#img1 {
+  z-index: 9;
+}
+
+#img2 {
+  z-index: 6;
+}
+
+#img3 {
+  z-index: 5;
+}
+
+#img4 {
+  z-index: 7;
+}
+
+#img5 {
+  z-index: 3;
+}
+
+#img6 {
+  z-index: 2;
+}
+
+#img7 {
+  z-index: 10;
+}
+
+#img8 {
+  z-index: 1;
+}
+
+a {
+  font-family: 'Roboto Slab' sans-serif;
+  color: white;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 50px;
+  margin-left: 50%;
+}
+
+a:hover {
+  color: red;
+}
+
+a:visited {
+  color: white;
+}

@@ -1,0 +1,36 @@
+body {
+  background-color: grey;
+  transition: all 1.2s;
+}
+p {
+  font-family: sans-serif;
+  color: white;
+  font-size: 50px;
+  text-align: center;
+  position: relative;
+  top: 5px;
+  pointer-events: none;
+}
+#aButton {
+  background: #60d934;
+  background-image: -webkit-linear-gradient(top, #60d934, #138517);
+  background-image: -moz-linear-gradient(top, #60d934, #138517);
+  background-image: -ms-linear-gradient(top, #60d934, #138517);
+  background-image: -o-linear-gradient(top, #60d934, #138517);
+  background-image: linear-gradient(to bottom, #60d934, #138517);
+  border-radius: 30%;
+  color: #ffffff;
+  width: 90px;
+  height: 70px;
+  align-content: center;
+  align-self: center;
+  text-decoration: none;
+  position: relative;
+  margin-top: 50%;
+  z-index: 1
+}
+
+#aButton:hover {
+  background: #22ad10;
+  text-decoration: none;
+}
