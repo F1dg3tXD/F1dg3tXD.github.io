@@ -3,6 +3,17 @@ body {
   padding: 0px;
   background-color: grey;
 }
+#text {
+  position: absolute;
+  z-index: 1;
+}
 canvas {
   background-color: green;
+  position: relative;
+}
+h1 {
+  color: white
+}
+p {
+  color: white
 }

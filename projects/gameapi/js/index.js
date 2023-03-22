@@ -14,9 +14,11 @@ let upPressed = false;
 let downPressed = false;
 
 let bluePressed = false;
-let orangePressed = false;
+let yellowPressed = false;
 let redPressed = false;
 let greenPressed = false;
+
+let connection = document.getElementById("connection")
 
 function setupCanvas() {
   canvas.width = window.innerWidth;
@@ -33,10 +35,12 @@ setupCanvas();
 window.addEventListener("resize", setupCanvas);
 window.addEventListener("gamepadconnected", (event) => {
   controllerIndex = event.gamepad.index;
+  connection.innerHTML = "Controller Connected"
   console.log("connected");
 });
 
 window.addEventListener("gamepaddisconnected", (event) => {
+  connection.innerHTML = "No Controller Detected"
   console.log("disconnected");
   controllerIndex = null;
 });
@@ -78,10 +82,10 @@ function controllerInput() {
       upPressed = true;
     }
 
-    redPressed = buttons[0].pressed;
-    bluePressed = buttons[1].pressed;
-    orangePressed = buttons[2].pressed;
-    greenPressed = buttons[3].pressed;
+    greenPressed = buttons[0].pressed;
+    redPressed = buttons[1].pressed;
+    bluePressed = buttons[2].pressed;
+    yellowPressed = buttons[3].pressed;
   }
 }
 
@@ -101,17 +105,17 @@ function movePlayer() {
 }
 
 function changePlayerColor() {
-  if (bluePressed) {
-    playerColor = "blue";
-  }
-  if (greenPressed) {
-    playerColor = "green";
-  }
   if (redPressed) {
     playerColor = "red";
   }
-  if (orangePressed) {
-    playerColor = "orange";
+  if (yellowPressed) {
+    playerColor = "yellow";
+  }
+  if (greenPressed) {
+    playerColor = "lime";
+  }
+  if (bluePressed) {
+    playerColor = "skyblue";
   }
 }
 
