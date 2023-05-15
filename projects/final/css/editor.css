@@ -22,11 +22,11 @@ body {
 }
 
 .webgl {
+  position: relative;
   margin:0;
   padding:0;
   width: 70%;
   height: 60%;
-  position: relative;
   top: 0px;
   left: 5px;
   z-index: -1000;
@@ -49,9 +49,9 @@ body {
 
 .paramPannel {
     position: absolute;
-    top: 140px;
+    top: 120px;
     width: 24%;
-    height: 60%;
+    height: 55%;
     right: 5%;
     margin: 0;
     text-align: center;
@@ -62,16 +62,27 @@ body {
     background-color: #3f3f3f;
     padding: 5px;
     overflow-y: scroll;
+    overflow-y: hidden;
 }
 
 .shapeControls {
     position: absolute;
     width: 350px;
+    height: 600px;
     left: 10px;
+    top: -50px;
     text-align: center;
     font-size: 18px;
     color: white;
     background-color: #3f3f3f;
+}
+.shapeControls img {
+    position: relative;
+    top: 30px;
+    margin-top: 30px;
+    border-radius: 25px;
+    width: 300px;
+    height: 200px;
 }
 
 .control {
