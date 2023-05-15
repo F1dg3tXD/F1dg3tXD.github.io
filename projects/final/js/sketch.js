@@ -20,7 +20,7 @@ function setup() {
 
     //save Image
     saveImage = createButton('Save');
-    saveImage.mousePressed(saveImage.mousePressed(saveCanvas(canvas, 'primative', 'png'));
+    saveImage.mousePressed(saveImage.mousePressed(saveCanvas(canvas, 'primative', 'png');
     saveImage.position(100, 40);
 
     // Create control pannel components
