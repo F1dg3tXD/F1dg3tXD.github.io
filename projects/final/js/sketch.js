@@ -19,8 +19,8 @@ function setup() {
     // file.disable('Export OBJ');
 
     //save Image
-    saveImage = createButton('Save Image');
-    saveImage.mousePressed(saveImage);
+    saveImage = createButton('Save');
+    saveImage.mousePressed(saveCanvas);
     saveImage.position(100, 40);
 
     // Create control pannel components
@@ -194,6 +194,11 @@ function draw() {
     pop();
 
     //Draw plane
+
+}
+
+function saveCanvas() {
+  saveCanvas(canvas, 'primative', 'png')
 }
 
 function keyPressed() {
@@ -218,8 +223,4 @@ function keyPressed() {
     } else if (keyCode === DOWN_ARROW) {
       rotateAltXFlag = false;
     }
-  }
-
-  function saveImage() {
-    save("Primative.png");
   }
