@@ -1,0 +1,185 @@
+.min-h-screen {
+    min-height: 100vh;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.bg-zinc-100 {
+    background-color: #2e2e2e;
+}
+
+.dark .bg-zinc-900 {
+    background-color: #1a202c;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.py-4 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.bg-white {
+    background-color: #ffffff;
+}
+
+.bg-dark {
+    background-color: #000000;
+}
+
+.dark .bg-zinc-800 {
+    background-color: #2d3748;
+}
+
+.shadow {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 1;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.text-xl {
+    font-size: 1.25rem;
+    color: #ffffff;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.flex-grow {
+    flex-grow: 1;
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.inset-0 {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.h-full {
+    height: 100%;
+}
+
+.object-cover {
+    object-fit: cover;
+}
+
+.opacity-30 {
+    opacity: 0.3;
+}
+
+.z-10 {
+    z-index: 10;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-5xl {
+    font-size: 3rem;
+}
+
+.text-white {
+    color: #ffffff;
+}
+
+.text-lg {
+    font-size: 1.125rem;
+}
+
+.mt-2 {
+    margin-top: 0.5rem;
+}
+
+.mt-4 {
+    margin-top: 1rem;
+}
+
+.px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.py-3 {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+.bg-black {
+    background-color: #000000;
+}
+
+.rounded-full {
+    border-radius: 9999px;
+}
+
+.shadow-lg {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.text-zinc-600 {
+    color: #718096;
+}
+
+.dark .text-zinc-300 {
+    color: #000000;
+}
+
+.space-x-4> :not([hidden])~ :not([hidden]) {
+    --tw-space-x-reverse: 0;
+    margin-right: calc(1rem * var(--tw-space-x-reverse));
+    margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.mb-2 {
+    margin-bottom: 0.5rem;
+}
+
+.icon-social {
+    width: 5vw;
+}
