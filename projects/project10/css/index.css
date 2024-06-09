@@ -1,0 +1,25 @@
+body {
+  background-color: red;
+  width: 100%;
+  overflow: hidden;
+  cursor: crosshair;
+}
+p {
+  font-family: 'Noto Sans', sans-serif;
+  color: white;
+  font-size: 20vh;
+  margin: 0;
+  user-select: none;
+  text-transform: uppercase;
+  width: 250px;
+  position: relative;
+  transition: all 0.4s ease-out;
+  /* undrline */
+  border-bottom-style: ridge;
+  border-bottom-width: 10px;
+  border-bottom-color: grey;
+}
+#theText {
+  position: relative;
+  transition: all 0.3s ease;
+}

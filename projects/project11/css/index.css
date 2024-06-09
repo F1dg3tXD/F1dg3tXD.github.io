@@ -1,0 +1,27 @@
+body {
+  background-color: #404040;
+}
+h1 {
+  color: white;
+  background-color: red;
+  position: sticky;
+  width: 20%;
+  border-radius: 20px;
+  text-align: center;
+  justify-content: left;
+}
+h2 {
+  color: white;
+  background-color: red;
+  position: sticky;
+  width: 20%;
+  border-radius: 20px;
+  text-align: center;
+  justify-content: left;
+  margin-top: -21px;
+}
+canvas {
+  display: block;
+  position: absolute;
+  margin: 30px;
+}
