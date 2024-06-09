@@ -1,0 +1,99 @@
+body {
+    background-color: #727272;
+}
+
+.window {
+    width: 90%;
+    height: 100%;
+}
+
+.title {
+    position: relative;
+    top: 10px;
+    left: 10px;
+    color: white;
+    height: 10px;
+}
+.title img {
+    position: relative;
+    scale: 25%;
+    top: -170px;
+    left: -200px;
+}
+
+.webgl {
+  position: relative;
+  margin:0;
+  padding:0;
+  width: 70%;
+  height: 60%;
+  top: 0px;
+  left: 5px;
+  z-index: -1000;
+}
+
+.paramTitle {
+    position: absolute;
+    width: 25%;
+    height: 10%;
+    top: 3%;
+    right: 5%;
+    margin: 0;
+    text-align: center;
+    font-size: 24px;
+    border-radius: 5px;
+    border: #727272;
+    color: white;
+    background-color: #3f3f3f;
+}
+
+.paramPannel {
+    position: absolute;
+    top: 120px;
+    width: 24%;
+    height: 55%;
+    right: 5%;
+    margin: 0;
+    text-align: center;
+    font-size: 24px;
+    border-radius: 5px;
+    border: #727272;
+    color: white;
+    background-color: #3f3f3f;
+    padding: 5px;
+    overflow-y: scroll;
+    overflow-y: hidden;
+}
+
+.shapeControls {
+    position: absolute;
+    width: 350px;
+    height: 600px;
+    left: 10px;
+    top: -50px;
+    text-align: center;
+    font-size: 18px;
+    color: white;
+    background-color: #3f3f3f;
+}
+.shapeControls img {
+    position: relative;
+    top: 30px;
+    margin-top: 30px;
+    border-radius: 25px;
+    width: 300px;
+    height: 200px;
+}
+
+.control {
+    position: relative;
+    background-color: #727272;
+    width: 300px;
+    height: 25px;
+    align-self: center;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    left: 20px;
+    margin: 5px;
+}

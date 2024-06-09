@@ -1,0 +1,94 @@
+body {
+    background-color: #727272;
+}
+
+.window {
+    width: 100%;
+    height: 90%;
+}
+
+.title {
+    position: relative;
+    top: -100px;
+    left: 10px;
+    color: white;
+    height: 300px;
+    width: 1150px;
+    font-size: 100px;
+    background-color: #3f3f3f;;
+}
+.title h1 {
+    position: relative;
+    left: 200px;
+    top: 30px;
+    font-family: 'Orbitron', sans-serif;
+
+}
+
+.title img {
+    position: absolute;
+    top: -400px;
+    left: -440px;
+    scale: 30%;
+}
+
+.editorButton {
+    position: relative;
+    height: 100px;
+    width: 200px;
+    top: -50px;
+    left: 300px;
+    scale: 200%;
+    border-radius: 25px;
+    text-align: center;
+    align-items: center;
+    background-color: #3f3f3f;
+    transition: all ease 500ms;
+}
+.editorButton:hover {
+    scale: 230%;
+    transition: all ease 500ms;
+}
+.button {
+    background-color: #727272;
+    position: relative;
+    height: 80px;
+    width: 180px;
+    align-items: center;
+    border-radius: 25px;
+    top: 10px;
+    left: 10px;
+    transition: all ease 500ms;
+}
+.button h1 {
+    position: relative;
+    top: 10px;
+    color: white;
+    transition: all ease 500ms;
+}
+.button h1:hover {
+    position: relative;
+    top: 10px;
+    color: red;
+    transition: all ease 500ms;
+}
+
+.about {
+    position: relative;
+    width: 80%;
+    color: white;
+    font-size: 24px;
+}
+
+.credit {
+    color: white;
+}
+.credit a{
+    color: white;
+    transition: all ease 500ms;
+}
+.credit a:hover {
+    color: red;
+    font-size: 30px;
+    transition: all ease 500ms;
+}
