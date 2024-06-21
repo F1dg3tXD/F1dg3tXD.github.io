@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Protected Page</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <div class="container">
+        <div id="password-prompt" class="prompt">
+            <h2 id="prompt-message"></h2>
+            <input type="password" id="password-input" placeholder="Enter Password">
+            <button onclick="checkPassword()">Submit</button>
+            <p id="error-message"></p>
+        </div>
+        <div id="protected-content" class="hidden">
+            <a href="golf/index.html">
+            <h1>Open Golf</h1>
+            </a>
+        </div>
+    </div>
+    <script src="js/index.js"></script>
+</body>
+</html>
