@@ -1,3 +1,72 @@
+body {
+    background-color: #121212;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    max-width: 800px;
+    width: 100%;
+    padding: 20px;
+}
+
+.ipBox {
+    background-color: #1e1e1e;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 20px 0;
+    text-align: left;
+    display: inline-block;
+    position: relative;
+    max-width: fit-content;
+    /* Adjust width to fit content */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+pre {
+    margin: 0;
+}
+
+code {
+    color: #dcdcdc;
+    font-family: Consolas, 'Courier New', monospace;
+    display: block;
+    white-space: pre;
+}
+
+.copy-button {
+    position: absolute;
+    top: 50%;
+    right: -150px;
+    /* Adjust as needed */
+    transform: translateY(-50%);
+    background: #3a3a3a;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.copy-button:hover {
+    background: #555555;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Existing CSS */
 .min-h-screen {
     min-height: 100vh;
 }
