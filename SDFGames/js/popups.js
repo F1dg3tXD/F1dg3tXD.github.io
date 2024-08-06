@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const popups = ['popup1', 'popup2', 'popup3', 'shoutout-popup'];
+    const popups = ['popup1', 'popup2', 'popup3', 'popup4', 'popup5', 'popup6', 'popup7', 'popup8', 'popup9', 'popup10', 'popup11', 'shoutout-popup'];
 
     function getDownloadButtonPositions() {
         const positions = [];
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Show a random popup every 5 seconds
-    setInterval(showRandomPopup, 1000);
+    setInterval(showRandomPopup, 3000);
 
     // Close popups when close button is clicked
     document.querySelectorAll('.close-popup').forEach(button => {
