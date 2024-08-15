@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const xmlFile = 'files.xml'; // Replace with the path to your XML file
+    const xmlFile = 'http://f1dg3t-xyz.duckdns.org/X/X/SDFGames/files.xml'; // Replace with the path to your XML file
 
     fetch(xmlFile)
         .then(response => response.text())
