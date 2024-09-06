@@ -1,0 +1,383 @@
+<html><head><base href="https://virtual-qc-generator.com/">
+<title>Tools | QCGen</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #e0e0e0;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #121212;
+    }
+    h1, h2 {
+        color: #ff4444;
+    }
+    .container {
+        background-color: #1e1e1e;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(255,68,68,0.1);
+    }
+    #file-input {
+        display: none;
+    }
+    .upload-btn, .generate-btn, .copy-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #ff4444;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        border: none;
+        font-size: 16px;
+    }
+    .upload-btn:hover, .generate-btn:hover, .copy-btn:hover {
+        background-color: #ff6666;
+    }
+    #output {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #444;
+        border-radius: 5px;
+        background-color: #2a2a2a;
+        white-space: pre-wrap;
+    }
+    .guide {
+        margin-top: 30px;
+        padding: 15px;
+        background-color: #2a2a2a;
+        border-left: 5px solid #ff4444;
+    }
+    #model-name {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #444;
+        border-radius: 5px;
+        background-color: #333;
+        color: #e0e0e0;
+    }
+    #model-name::placeholder {
+        color: #888;
+    }
+    pre {
+        background-color: #2a2a2a;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+    code {
+        font-family: 'Courier New', Courier, monospace;
+        color: #ff9999;
+    }
+    /* Scrollbar Styles */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #1e1e1e;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #ff4444;
+        border-radius: 5px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #ff6666;
+    }
+    .copy-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #ff4444;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        border: none;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+    .copy-btn:hover {
+        background-color: #ff6666;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>QCGen</h1>
+        <p>Upload a ZIP file containing your model files, and we'll generate .qc files for you!</p>
+        <label for="file-input" class="upload-btn">Choose ZIP File</label>
+        <input type="file" id="file-input" accept=".zip">
+        <div id="model-list" style="display: none;">
+            <h2>Detected Models:</h2>
+            <div id="model-checkboxes"></div>
+        </div>
+        <button class="generate-btn" onclick="generateQC()">Generate QC</button>
+        <div id="output"></div>
+        <button id="copy-btn" class="copy-btn" style="display: none;">Copy to Clipboard</button>
+
+        <div class="guide">
+            <h2>How to Format Your ZIP Folder</h2>
+            <p>To ensure the best results, please follow these guidelines when preparing your ZIP folder:</p>
+            <ol>
+                <li>Place your main model file (.smd) in the root of the ZIP folder or in a subdirectory.</li>
+                <li>Name your main model file "model.smd" or "[model_name].smd" (case-sensitive).</li>
+                <li>Put your animation files (.smd) in an "anims" folder within the ZIP.</li>
+                <li>Name your animation files descriptively (e.g., "idle.smd", "walk.smd", "attack.smd").</li>
+                <li>Include any texture files (.vtf, .vmt) in a subfolder named "textures".</li>
+                <li>If you have physics models, name them "physics.smd" or "physics_1.smd", "physics_2.smd", etc.</li>
+                <li>Optionally, include a "config.json" file in the root to specify additional parameters.</li>
+            </ol>
+        </div>
+
+        <div class="guide">
+            <h2>Example config.json File</h2>
+            <p>You can include a config.json file in the root of your ZIP to specify additional parameters for your model. Here's an example of how to structure this file:</p>
+            <pre><code>{
+    "modelname": "example_model",
+    "scale": 1.0,
+    "eyeposition": [0, 0, 65],
+    "surfaceprop": "flesh",
+    "staticprop": true,
+    "cdmaterials": ["models/example_model", "models/shared"],
+    "texturegroup": {
+        "skinfamilies": [
+            ["main_texture", "skin1"],
+            ["alt_texture", "skin2"]
+        ]
+    },
+    "animations": [
+        {
+            "name": "idle",
+            "fps": 30,
+            "loop": true
+        },
+        {
+            "name": "walk",
+            "fps": 60,
+            "loop": true,
+            "blend": {
+                "delta": true,
+                "type": "poseparameter",
+                "range": [0, 1],
+                "poseparameter": "move_x"
+            }
+        }
+    ],
+    "collisionmodel": {
+        "mass": 85,
+        "inertia": 10,
+        "damping": 0.01,
+        "rotdamping": 1.5,
+        "rootbone": "pelvis"
+    }
+}</code></pre>
+            <p>This config.json file allows you to specify various model parameters, animation details, and physics properties. The generator will use these values to create a more detailed and customized .qc file.</p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script>
+        let zipContent = null;
+        let detectedModels = [];
+
+        document.getElementById('file-input').addEventListener('change', handleFileSelect);
+
+        async function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    zipContent = e.target.result;
+                    await scanZipForModels(zipContent);
+                };
+                reader.readAsArrayBuffer(file);
+            }
+        }
+
+        async function scanZipForModels(data) {
+            const zip = await JSZip.loadAsync(data);
+            const files = Object.keys(zip.files);
+            
+            detectedModels = files.filter(file => 
+                file.toLowerCase().endsWith('.smd') && 
+                !file.toLowerCase().includes('anims/') &&
+                !file.toLowerCase().includes('physics')
+            ).map(file => ({
+                name: file.split('/').pop().split('.')[0],
+                path: file
+            }));
+
+            displayModelList();
+        }
+
+        function displayModelList() {
+            const modelList = document.getElementById('model-list');
+            const modelCheckboxes = document.getElementById('model-checkboxes');
+            modelCheckboxes.innerHTML = '';
+
+            detectedModels.forEach((model, index) => {
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `model-${index}`;
+                checkbox.value = model.path;
+
+                const label = document.createElement('label');
+                label.htmlFor = `model-${index}`;
+                label.textContent = model.name;
+
+                modelCheckboxes.appendChild(checkbox);
+                modelCheckboxes.appendChild(label);
+                modelCheckboxes.appendChild(document.createElement('br'));
+            });
+
+            modelList.style.display = 'block';
+        }
+
+        async function generateQC() {
+            if (!zipContent) {
+                alert("Please select a ZIP file first.");
+                return;
+            }
+
+            const selectedModels = Array.from(document.querySelectorAll('#model-checkboxes input:checked'))
+                .map(checkbox => detectedModels.find(model => model.path === checkbox.value));
+
+            if (selectedModels.length === 0) {
+                alert("Please select at least one model to generate QC file.");
+                return;
+            }
+
+            const qcFiles = await processZipFile(zipContent, selectedModels);
+            displayOutput(qcFiles);
+        }
+
+        async function processZipFile(data, selectedModels) {
+            const zip = await JSZip.loadAsync(data);
+            const files = Object.keys(zip.files);
+
+            let config = null;
+            if (files.includes('config.json')) {
+                const configContent = await zip.file('config.json').async('string');
+                config = JSON.parse(configContent);
+            }
+
+            const qcFiles = {};
+
+            for (const model of selectedModels) {
+                const animationFiles = files.filter(file => 
+                    (file.toLowerCase().startsWith('anims/') && file.toLowerCase().endsWith('.smd')) ||
+                    (file.toLowerCase().endsWith('.smd') && !file.toLowerCase().includes('physics') && file !== model.path)
+                );
+                const physicsFiles = files.filter(file => file.toLowerCase().includes('physics') && file.toLowerCase().endsWith('.smd'));
+                const textureFiles = files.filter(file => file.toLowerCase().includes('textures/'));
+
+                qcFiles[model.name] = generateQCContent(model.name, model.path, animationFiles, physicsFiles, textureFiles, config);
+            }
+
+            return qcFiles;
+        }
+
+        function displayOutput(qcFiles) {
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = '';
+
+            for (const [modelName, content] of Object.entries(qcFiles)) {
+                const modelDiv = document.createElement('div');
+                modelDiv.innerHTML = `<h3>${modelName}.qc</h3><pre><code>${content}</code></pre>`;
+                outputDiv.appendChild(modelDiv);
+            }
+
+            const copyBtn = document.getElementById('copy-btn');
+            copyBtn.style.display = 'inline-block';
+            
+            copyBtn.onclick = function() {
+                const allContent = Object.entries(qcFiles).map(([name, content]) => `// ${name}.qc\n${content}`).join('\n\n');
+                navigator.clipboard.writeText(allContent).then(function() {
+                    copyBtn.textContent = 'Copied!';
+                    setTimeout(function() {
+                        copyBtn.textContent = 'Copy to Clipboard';
+                    }, 2000);
+                }, function(err) {
+                    console.error('Could not copy text: ', err);
+                });
+            };
+        }
+
+        function generateQCContent(modelName, modelFile, animationFiles, physicsFiles, textureFiles, config) {
+            let qc = `$modelname "${config?.modelname || modelName}.mdl"\n\n`;
+            qc += `$model "body" "${modelFile}"\n\n`;
+            
+            if (config?.scale) {
+                qc += `$scale ${config.scale}\n\n`;
+            }
+
+            if (config?.eyeposition) {
+                qc += `$eyeposition ${config.eyeposition.join(' ')}\n\n`;
+            }
+
+            if (config?.surfaceprop) {
+                qc += `$surfaceprop "${config.surfaceprop}"\n\n`;
+            }
+
+            if (config?.staticprop) {
+                qc += `$staticprop\n\n`;
+            }
+
+            if (config?.cdmaterials) {
+                config.cdmaterials.forEach(material => {
+                    qc += `$cdmaterials "${material}/"\n`;
+                });
+                qc += '\n';
+            } else if (textureFiles.length > 0) {
+                qc += `$cdmaterials "models/${modelName}/"\n\n`;
+            }
+
+            if (config?.texturegroup) {
+                qc += `$texturegroup "skinfamilies"\n{\n`;
+                config.texturegroup.skinfamilies.forEach(family => {
+                    qc += `\t{ ${family.map(texture => `"${texture}"`).join(' ')} }\n`;
+                });
+                qc += `}\n\n`;
+            }
+
+            if (config?.animations) {
+                config.animations.forEach(anim => {
+                    qc += `$sequence "${anim.name}" {\n`;
+                    qc += `\t"anims/${anim.name}.smd"\n`;
+                    if (anim.fps) qc += `\tfps ${anim.fps}\n`;
+                    if (anim.loop) qc += `\tloop\n`;
+                    if (anim.blend) {
+                        qc += `\tblend "${anim.blend.poseparameter}" ${anim.blend.range.join(' ')}\n`;
+                    }
+                    qc += `}\n\n`;
+                });
+            } else {
+                animationFiles.forEach(anim => {
+                    const animName = anim.split('/').pop().split('.')[0];
+                    qc += `$sequence "${animName}" {\n\t"${anim}"\n\tloop\n\tfps 30\n}\n\n`;
+                });
+            }
+
+            if (config?.collisionmodel) {
+                qc += `$collisionmodel "${physicsFiles[0] || 'physics.smd'}" {\n`;
+                qc += `\t$mass ${config.collisionmodel.mass}\n`;
+                qc += `\t$inertia ${config.collisionmodel.inertia}\n`;
+                qc += `\t$damping ${config.collisionmodel.damping}\n`;
+                qc += `\t$rotdamping ${config.collisionmodel.rotdamping}\n`;
+                qc += `\t$rootbone "${config.collisionmodel.rootbone}"\n`;
+                qc += `}\n\n`;
+            } else {
+                physicsFiles.forEach((physics, index) => {
+                    qc += `$collisionmodel "${physics}" {\n\t$mass 100\n\t$inertia 10\n\t$damping 0.01\n\t$rotdamping 1.5\n\t$rootbone "root"\n}\n\n`;
+                });
+            }
+
+            return qc;
+        }
+    </script>
+</body>
+</html>
