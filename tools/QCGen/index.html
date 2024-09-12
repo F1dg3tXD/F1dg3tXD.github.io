@@ -1,5 +1,5 @@
 <html><head><base href="https://virtual-qc-generator.com/">
-<title>Tools | QCGen</title>
+<title>QCGen - Automatic QC File Generator</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
@@ -11,6 +11,7 @@
         margin: 0 auto;
         padding: 20px;
         background-color: #121212;
+        position: relative;
     }
     h1, h2 {
         color: #ff4444;
@@ -24,7 +25,7 @@
     #file-input {
         display: none;
     }
-    .upload-btn, .generate-btn, .copy-btn {
+    .upload-btn, .generate-btn, .copy-btn, .add-btn {
         display: inline-block;
         padding: 10px 20px;
         background-color: #ff4444;
@@ -34,8 +35,25 @@
         transition: background-color 0.3s ease;
         border: none;
         font-size: 16px;
+        margin-top: 10px;
     }
-    .upload-btn:hover, .generate-btn:hover, .copy-btn:hover {
+    .upload-btn:hover, .generate-btn:hover, .copy-btn:hover, .add-btn:hover {
+        background-color: #ff6666;
+    }
+    .remove-btn {
+        background-color: #ff4444;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        cursor: pointer;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+    }
+    .remove-btn:hover {
         background-color: #ff6666;
     }
     #output {
@@ -88,21 +106,80 @@
     ::-webkit-scrollbar-thumb:hover {
         background: #ff6666;
     }
-    .copy-btn {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #ff4444;
-        color: #fff;
-        cursor: pointer;
+    .body-group, .skin, .animation, .physics-group {
+        margin-top: 10px;
+        background-color: #2a2a2a;
+        padding: 10px;
         border-radius: 5px;
-        transition: background-color 0.3s ease;
-        border: none;
-        font-size: 16px;
+        position: relative;
+    }
+    .body-group input, .skin input, .body-group select, .animation select, .animation input[type="number"], .animation input[type="text"], .physics-group input {
+        width: calc(100% - 20px);
+        padding: 8px;
+        margin: 5px 0;
+        border: 1px solid #444;
+        border-radius: 5px;
+        background-color: #333;
+        color: #e0e0e0;
+        font-size: 14px;
+    }
+    .body-group select {
+        height: 100px;
+    }
+    .body-group input::placeholder, .skin input::placeholder, .physics-group input::placeholder {
+        color: #888;
+    }
+    .animation label {
+        margin-left: 5px;
+        color: #e0e0e0;
+    }
+    .blend-options {
         margin-top: 10px;
     }
-    .copy-btn:hover {
+    .social-button {
+        position: fixed;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background-color: #ff4444;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        transition: background-color 0.3s ease;
+        z-index: 1000;
+        overflow: visible;
+    }
+    .social-button:hover {
         background-color: #ff6666;
     }
+    .social-button svg {
+        width: 30px;
+        height: 30px;
+        fill: #ffffff;
+    }
+    .social-button .username {
+        position: absolute;
+        right: 60px;
+        background-color: #ff4444;
+        color: #ffffff;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 14px;
+        opacity: 0;
+        transform: translateX(20px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        white-space: nowrap;
+    }
+    .social-button:hover .username {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    .github-button { top: 20px; }
+    .twitter-button { top: 80px; }
+    .tiktok-button { top: 140px; }
+    .youtube-button { top: 200px; }
 </style>
 </head>
 <body>
@@ -114,6 +191,25 @@
         <div id="model-list" style="display: none;">
             <h2>Detected Models:</h2>
             <div id="model-checkboxes"></div>
+            <h3>Body Groups:</h3>
+            <div id="body-groups"></div>
+            <h3>Skins:</h3>
+            <div id="skins"></div>
+            <h3>Animations:</h3>
+            <div id="animations"></div>
+            <h3>Physics Properties:</h3>
+            <div id="physics-properties">
+                <div class="physics-group">
+                    <input type="text" placeholder="Physics Model (e.g., physics.smd)">
+                    <input type="number" placeholder="Mass">
+                    <input type="number" placeholder="Inertia">
+                    <input type="number" placeholder="Damping">
+                    <input type="number" placeholder="Rotational Damping">
+                    <input type="text" placeholder="Root Bone">
+                    <button class="remove-btn" onclick="this.parentElement.remove()">X</button>
+                </div>
+                <button class="add-btn" onclick="addPhysicsGroup()">Add Physics Group</button>
+            </div>
         </div>
         <button class="generate-btn" onclick="generateQC()">Generate QC</button>
         <div id="output"></div>
@@ -143,6 +239,23 @@
     "surfaceprop": "flesh",
     "staticprop": true,
     "cdmaterials": ["models/example_model", "models/shared"],
+    "bodygroups": [
+        {
+            "name": "hat",
+            "models": [
+                "hat_model1.smd",
+                "hat_model2.smd",
+                "hat_model3.smd"
+            ]
+        },
+        {
+            "name": "accessories",
+            "models": [
+                "glasses.smd",
+                "necklace.smd"
+            ]
+        }
+    ],
     "texturegroup": {
         "skinfamilies": [
             ["main_texture", "skin1"],
@@ -179,10 +292,40 @@
         </div>
     </div>
 
+    <a href="https://github.com/F1dg3tXD" target="_blank" rel="noopener noreferrer" class="social-button github-button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+        <span class="username">F1dg3tXD</span>
+    </a>
+
+    <a href="https://x.com/f1dg3t_dev" target="_blank" rel="noopener noreferrer" class="social-button twitter-button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+        <span class="username">f1dg3t_dev</span>
+    </a>
+
+    <a href="https://www.tiktok.com/@the_real_f1dg3t" target="_blank" rel="noopener noreferrer" class="social-button tiktok-button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+        </svg>
+        <span class="username">the_real_f1dg3t</span>
+    </a>
+
+    <a href="https://www.youtube.com/@F1dg3t" target="_blank" rel="noopener noreferrer" class="social-button youtube-button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+        <span class="username">F1dg3t</span>
+    </a>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
     <script>
         let zipContent = null;
         let detectedModels = [];
+        let detectedTextures = [];
+        let detectedAnimations = [];
 
         document.getElementById('file-input').addEventListener('change', handleFileSelect);
 
@@ -211,7 +354,38 @@
                 path: file
             }));
 
+            detectedTextures = files.filter(file => 
+                file.toLowerCase().includes('textures/') &&
+                (file.toLowerCase().endsWith('.vtf') || file.toLowerCase().endsWith('.vmt'))
+            );
+
+            detectedAnimations = files.filter(file => 
+                file.toLowerCase().startsWith('anims/') && 
+                file.toLowerCase().endsWith('.smd')
+            );
+
             displayModelList();
+            displayBodyGroups();
+            displaySkins();
+            displayAnimations();
+        }
+
+        function displayTextureList(container) {
+            container.innerHTML = '';
+            detectedTextures.forEach((texture, index) => {
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `texture-${index}`;
+                checkbox.value = texture;
+
+                const label = document.createElement('label');
+                label.htmlFor = `texture-${index}`;
+                label.textContent = texture.split('/').pop();
+
+                container.appendChild(checkbox);
+                container.appendChild(label);
+                container.appendChild(document.createElement('br'));
+            });
         }
 
         function displayModelList() {
@@ -235,6 +409,199 @@
             });
 
             modelList.style.display = 'block';
+        }
+
+        function displayBodyGroups() {
+            const bodyGroupsDiv = document.getElementById('body-groups');
+            bodyGroupsDiv.innerHTML = '';
+
+            const addBodyGroupBtn = document.createElement('button');
+            addBodyGroupBtn.textContent = 'Add Body Group';
+            addBodyGroupBtn.className = 'add-btn';
+            addBodyGroupBtn.onclick = addBodyGroup;
+            bodyGroupsDiv.appendChild(addBodyGroupBtn);
+        }
+
+        function addRemoveButton(container) {
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = 'X';
+            removeBtn.className = 'remove-btn';
+            removeBtn.onclick = function() {
+                container.remove();
+            };
+            container.appendChild(removeBtn);
+        }
+
+        function addBodyGroup() {
+            const bodyGroupsDiv = document.getElementById('body-groups');
+            const groupDiv = document.createElement('div');
+            groupDiv.className = 'body-group';
+
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.placeholder = 'Body Group Name';
+            groupDiv.appendChild(nameInput);
+
+            const modelsSelect = document.createElement('select');
+            modelsSelect.multiple = true;
+            detectedModels.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model.path;
+                option.textContent = model.name;
+                modelsSelect.appendChild(option);
+            });
+            groupDiv.appendChild(modelsSelect);
+
+            addRemoveButton(groupDiv);
+            bodyGroupsDiv.insertBefore(groupDiv, bodyGroupsDiv.lastChild);
+        }
+
+        function displaySkins() {
+            const skinsDiv = document.getElementById('skins');
+            skinsDiv.innerHTML = '';
+
+            const addSkinBtn = document.createElement('button');
+            addSkinBtn.textContent = 'Add Skin';
+            addSkinBtn.className = 'add-btn';
+            addSkinBtn.onclick = addSkin;
+            skinsDiv.appendChild(addSkinBtn);
+        }
+
+        function addSkin() {
+            const skinsDiv = document.getElementById('skins');
+            const skinDiv = document.createElement('div');
+            skinDiv.className = 'skin';
+
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.placeholder = 'Skin Name';
+            skinDiv.appendChild(nameInput);
+
+            const texturesContainer = document.createElement('div');
+            texturesContainer.className = 'textures-container';
+            displayTextureList(texturesContainer);
+            skinDiv.appendChild(texturesContainer);
+
+            addRemoveButton(skinDiv);
+            skinsDiv.insertBefore(skinDiv, skinsDiv.lastChild);
+        }
+
+        function displayAnimations() {
+            const animationsDiv = document.getElementById('animations');
+            animationsDiv.innerHTML = '';
+
+            const addAnimationBtn = document.createElement('button');
+            addAnimationBtn.textContent = 'Add Animation';
+            addAnimationBtn.className = 'add-btn';
+            addAnimationBtn.onclick = addAnimation;
+            animationsDiv.appendChild(addAnimationBtn);
+        }
+
+        function addAnimation() {
+            const animationsDiv = document.getElementById('animations');
+            const animDiv = document.createElement('div');
+            animDiv.className = 'animation';
+
+            const nameSelect = document.createElement('select');
+            nameSelect.className = 'anim-select';
+            const defaultOption = document.createElement('option');
+            defaultOption.text = 'Select Animation';
+            defaultOption.value = '';
+            nameSelect.appendChild(defaultOption);
+
+            const animationFiles = detectedAnimations.map(file => file.split('/').pop());
+            animationFiles.forEach(file => {
+                const option = document.createElement('option');
+                option.value = file;
+                option.textContent = file.split('.')[0];
+                nameSelect.appendChild(option);
+            });
+            animDiv.appendChild(nameSelect);
+
+            const fpsInput = document.createElement('input');
+            fpsInput.type = 'number';
+            fpsInput.placeholder = 'FPS';
+            fpsInput.className = 'anim-input';
+            animDiv.appendChild(fpsInput);
+
+            const loopCheckbox = document.createElement('input');
+            loopCheckbox.type = 'checkbox';
+            loopCheckbox.id = `loop-${Date.now()}`;
+            const loopLabel = document.createElement('label');
+            loopLabel.htmlFor = loopCheckbox.id;
+            loopLabel.textContent = 'Loop';
+            animDiv.appendChild(loopCheckbox);
+            animDiv.appendChild(loopLabel);
+
+            const blendCheckbox = document.createElement('input');
+            blendCheckbox.type = 'checkbox';
+            blendCheckbox.id = `blend-${Date.now()}`;
+            blendCheckbox.className = 'blend-checkbox';
+            const blendLabel = document.createElement('label');
+            blendLabel.htmlFor = blendCheckbox.id;
+            blendLabel.textContent = 'Use Blend';
+            animDiv.appendChild(blendCheckbox);
+            animDiv.appendChild(blendLabel);
+
+            const blendDiv = document.createElement('div');
+            blendDiv.className = 'blend-options';
+            blendDiv.style.display = 'none';
+
+            const blendTypeSelect = document.createElement('select');
+            blendTypeSelect.innerHTML = `
+                <option value="poseparameter">Pose Parameter</option>
+                <option value="delta">Delta</option>
+            `;
+            blendDiv.appendChild(blendTypeSelect);
+
+            const poseParamInput = document.createElement('input');
+            poseParamInput.type = 'text';
+            poseParamInput.placeholder = 'Pose Parameter';
+            blendDiv.appendChild(poseParamInput);
+
+            const rangeStartInput = document.createElement('input');
+            rangeStartInput.type = 'number';
+            rangeStartInput.placeholder = 'Range Start';
+            blendDiv.appendChild(rangeStartInput);
+
+            const rangeEndInput = document.createElement('input');
+            rangeEndInput.type = 'number';
+            rangeEndInput.placeholder = 'Range End';
+            blendDiv.appendChild(rangeEndInput);
+
+            animDiv.appendChild(blendDiv);
+
+            blendCheckbox.addEventListener('change', function() {
+                blendDiv.style.display = this.checked ? 'block' : 'none';
+            });
+
+            addRemoveButton(animDiv);
+            animationsDiv.insertBefore(animDiv, animationsDiv.lastChild);
+        }
+
+        function addPhysicsGroup() {
+            const physicsDiv = document.getElementById('physics-properties');
+            const groupDiv = document.createElement('div');
+            groupDiv.className = 'physics-group';
+
+            const inputs = [
+                { type: 'text', placeholder: 'Physics Model (e.g., physics.smd)' },
+                { type: 'number', placeholder: 'Mass' },
+                { type: 'number', placeholder: 'Inertia' },
+                { type: 'number', placeholder: 'Damping' },
+                { type: 'number', placeholder: 'Rotational Damping' },
+                { type: 'text', placeholder: 'Root Bone' }
+            ];
+
+            inputs.forEach(input => {
+                const inputElem = document.createElement('input');
+                inputElem.type = input.type;
+                inputElem.placeholder = input.placeholder;
+                groupDiv.appendChild(inputElem);
+            });
+
+            addRemoveButton(groupDiv);
+            physicsDiv.insertBefore(groupDiv, physicsDiv.lastChild);
         }
 
         async function generateQC() {
@@ -308,8 +675,8 @@
         }
 
         function generateQCContent(modelName, modelFile, animationFiles, physicsFiles, textureFiles, config) {
-            let qc = `$modelname "${config?.modelname || modelName}.mdl"\n\n`;
-            qc += `$model "body" "${modelFile}"\n\n`;
+            let qc = `// Generated with QCGen by F1dg3t\n\n`;
+            qc += `$modelname "${config?.modelname || modelName}.mdl"\n\n`;
             
             if (config?.scale) {
                 qc += `$scale ${config.scale}\n\n`;
@@ -336,45 +703,96 @@
                 qc += `$cdmaterials "models/${modelName}/"\n\n`;
             }
 
-            if (config?.texturegroup) {
-                qc += `$texturegroup "skinfamilies"\n{\n`;
-                config.texturegroup.skinfamilies.forEach(family => {
-                    qc += `\t{ ${family.map(texture => `"${texture}"`).join(' ')} }\n`;
+            const bodyGroups = Array.from(document.querySelectorAll('.body-group')).map(group => ({
+                name: group.querySelector('input').value,
+                models: Array.from(group.querySelector('select').selectedOptions).map(option => option.value)
+            }));
+
+            if (bodyGroups.length > 0) {
+                bodyGroups.forEach(group => {
+                    qc += `$bodygroup "${group.name}"\n{\n`;
+                    group.models.forEach(model => {
+                        qc += `\tstudio "${model}"\n`;
+                    });
+                    qc += `}\n\n`;
                 });
-                qc += `}\n\n`;
             }
 
-            if (config?.animations) {
-                config.animations.forEach(anim => {
+            if (config?.texturegroup) {
+                qc += `$texturegroup "skinfamilies"\n{\n`;
+                config.texturegroup.skincategorized.forEach(skin => {
+                    qc += `\t{ "${skin}" }\n`;
+                });
+                qc += `}\n\n`;
+            } else {
+                const skins = Array.from(document.querySelectorAll('.skin')).map(skinDiv => ({
+                    name: skinDiv.querySelector('input').value,
+                    textures: Array.from(skinDiv.querySelectorAll('.textures-container input:checked')).map(checkbox => checkbox.value)
+                }));
+
+                if (skins.length > 0) {
+                    qc += `$texturegroup "skinfamilies"\n{\n`;
+                    skins.forEach(skin => {
+                        qc += `\t{ `;
+                        skin.textures.forEach(texture => {
+                            qc += `"${texture.split('/').pop().split('.')[0]}" `;
+                        });
+                        qc += `} // ${skin.name}\n`;
+                    });
+                    qc += `}\n\n`;
+                }
+            }
+
+            const animations = Array.from(document.querySelectorAll('.animation')).map(animDiv => ({
+                name: animDiv.querySelector('.anim-select').value.split('.')[0],
+                fps: animDiv.querySelector('.anim-input').value,
+                loop: animDiv.querySelector('input[type="checkbox"]').checked,
+                blend: animDiv.querySelector('.blend-checkbox').checked ? {
+                    type: animDiv.querySelector('.blend-options select').value,
+                    poseparameter: animDiv.querySelector('.blend-options input[placeholder="Pose Parameter"]').value,
+                    range: [
+                        parseFloat(animDiv.querySelector('.blend-options input[placeholder="Range Start"]').value),
+                        parseFloat(animDiv.querySelector('.blend-options input[placeholder="Range End"]').value)
+                    ]
+                } : null
+            }));
+
+            animations.forEach(anim => {
+                if (anim.name) {
                     qc += `$sequence "${anim.name}" {\n`;
                     qc += `\t"anims/${anim.name}.smd"\n`;
                     if (anim.fps) qc += `\tfps ${anim.fps}\n`;
                     if (anim.loop) qc += `\tloop\n`;
                     if (anim.blend) {
+                        if (anim.blend.type === 'delta') {
+                            qc += `\tdelta\n`;
+                        }
                         qc += `\tblend "${anim.blend.poseparameter}" ${anim.blend.range.join(' ')}\n`;
                     }
                     qc += `}\n\n`;
-                });
-            } else {
-                animationFiles.forEach(anim => {
-                    const animName = anim.split('/').pop().split('.')[0];
-                    qc += `$sequence "${animName}" {\n\t"${anim}"\n\tloop\n\tfps 30\n}\n\n`;
-                });
-            }
+                }
+            });
 
-            if (config?.collisionmodel) {
-                qc += `$collisionmodel "${physicsFiles[0] || 'physics.smd'}" {\n`;
-                qc += `\t$mass ${config.collisionmodel.mass}\n`;
-                qc += `\t$inertia ${config.collisionmodel.inertia}\n`;
-                qc += `\t$damping ${config.collisionmodel.damping}\n`;
-                qc += `\t$rotdamping ${config.collisionmodel.rotdamping}\n`;
-                qc += `\t$rootbone "${config.collisionmodel.rootbone}"\n`;
-                qc += `}\n\n`;
-            } else {
-                physicsFiles.forEach((physics, index) => {
-                    qc += `$collisionmodel "${physics}" {\n\t$mass 100\n\t$inertia 10\n\t$damping 0.01\n\t$rotdamping 1.5\n\t$rootbone "root"\n}\n\n`;
-                });
-            }
+            const physicsGroups = Array.from(document.querySelectorAll('.physics-group')).map(group => ({
+                model: group.querySelector('input[placeholder="Physics Model (e.g., physics.smd)"]').value,
+                mass: group.querySelector('input[placeholder="Mass"]').value,
+                inertia: group.querySelector('input[placeholder="Inertia"]').value,
+                damping: group.querySelector('input[placeholder="Damping"]').value,
+                rotdamping: group.querySelector('input[placeholder="Rotational Damping"]').value,
+                rootbone: group.querySelector('input[placeholder="Root Bone"]').value
+            }));
+
+            physicsGroups.forEach(physics => {
+                if (physics.model) {
+                    qc += `$collisionmodel "${physics.model}" {\n`;
+                    if (physics.mass) qc += `\t$mass ${physics.mass}\n`;
+                    if (physics.inertia) qc += `\t$inertia ${physics.inertia}\n`;
+                    if (physics.damping) qc += `\t$damping ${physics.damping}\n`;
+                    if (physics.rotdamping) qc += `\t$rotdamping ${physics.rotdamping}\n`;
+                    if (physics.rootbone) qc += `\t$rootbone "${physics.rootbone}"\n`;
+                    qc += `}\n\n`;
+                }
+            });
 
             return qc;
         }
