@@ -1,0 +1,19 @@
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.logo-container {
+    text-align: center;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+#logo {
+    max-width: 50%;
+    height: auto;
+}
