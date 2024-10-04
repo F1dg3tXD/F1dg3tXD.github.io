@@ -16,7 +16,7 @@ function draw() {
   let scaleFactor = min(windowWidth / baseSize, windowHeight / baseSize); // Maintain aspect ratio
   
   push();
-  translate(windowWidth / 2, windowHeight / 2); // Center the content
+  translate(windowWidth / 2, 0); // Center the content
   scale(scaleFactor); // Scale based on the window size while maintaining aspect ratio
   translate(-baseSize / 2, -baseSize / 2); // Move the origin to maintain centering
   
