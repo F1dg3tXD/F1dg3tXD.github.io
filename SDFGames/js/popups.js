@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const popups = ['popup1', 'popup2', 'popup3', 'popup4', 'popup5', 'popup6', 'popup7', 'popup8', 'popup9', 'popup10', 'popup11', 'shoutout-popup'];
+    const popups = ['popup1', 'shoutout-popup'];
 
     function getDownloadButtonPositions() {
         const positions = [];
