@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const xmlFile = 'https://raw.githubusercontent.com/F1dg3tXD/F1dg3tXD.github.io/main/SDFGames/files.xml'; // Replace with the path to your XML file
+    const xmlFile = 'https://raw.githubusercontent.com/F1dg3tXD/F1dg3tXD.github.io/refs/heads/main/SDFGames/files.xml'; // Replace with the path to your XML file
 
     fetch(xmlFile)
         .then(response => response.text())
