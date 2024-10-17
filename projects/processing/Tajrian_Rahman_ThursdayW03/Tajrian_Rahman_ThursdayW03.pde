@@ -3,6 +3,8 @@ import processing.data.JSONArray;
 import peasy.*;
 import java.io.*;
 
+// Tajrian Rahman
+
 JSONArray grid;
 float cellSize = 50;
 PeasyCam cam;
