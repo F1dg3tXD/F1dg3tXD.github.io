@@ -117,14 +117,14 @@
     ::-webkit-scrollbar-thumb:hover {
         background: #ff6666;
     }
-    .body-group, .skin, .animation, .physics-group {
+    .body-group, .skin, .animation, .physics-group, .morph-group, .gmod-anim-group {
         margin-top: 10px;
         background-color: #2a2a2a;
         padding: 10px;
         border-radius: 5px;
         position: relative;
     }
-    .body-group input, .skin input, .body-group select, .animation select, .animation input[type="number"], .animation input[type="text"], .physics-group input {
+    .body-group input, .skin input, .body-group select, .animation select, .animation input[type="number"], .animation input[type="text"], .physics-group input, .morph-group input, .gmod-anim-group input, .gmod-anim-group select {
         width: calc(100% - 20px);
         padding: 8px;
         margin: 5px 0;
@@ -137,8 +137,18 @@
     .body-group select {
         height: 100px;
     }
-    .body-group input::placeholder, .skin input::placeholder, .physics-group input::placeholder {
+    .body-group input::placeholder, .skin input::placeholder, .physics-group input::placeholder, .morph-group input::placeholder {
         color: #888;
+    }
+    #gmod-type {
+        width: 100%;
+        padding: 8px;
+        margin: 5px 0;
+        border: 1px solid #444;
+        border-radius: 5px;
+        background-color: #333;
+        color: #e0e0e0;
+        font-size: 14px;
     }
     .animation label {
         margin-left: 5px;
@@ -196,7 +206,7 @@
 <body>
     <div class="container">
         <h1>QCGen</h1>
-        <p>Upload a ZIP file containing your model files, and we'll generate .qc files for you!</p>
+        <p>Upload a ZIP file containing your model files, and we&apos;ll generate .qc files for you!</p>
         <label for="file-input" class="upload-btn">Choose ZIP File</label>
         <input type="file" id="file-input" accept=".zip">
         <div id="model-list" style="display: none;">
@@ -221,6 +231,19 @@
                 </div>
                 <button class="add-btn" onclick="addPhysicsGroup()">Add Physics Group</button>
             </div>
+            <h3>Morphs (VTA):</h3>
+            <div id="morphs">
+                <button class="add-btn" onclick="addMorph()">Add Morph Target</button>
+            </div>
+            <h3>Garry&apos;s Mod Animations:</h3>
+            <div id="gmod-animations">
+                <select id="gmod-type">
+                    <option value="player">Player Model</option>
+                    <option value="viewmodel">Viewmodel</option>
+                </select>
+                <div id="gmod-anim-list"></div>
+                <button class="add-btn" onclick="addGModAnim()">Add Garry&apos;s Mod Animation</button>
+            </div>
         </div>
         <button class="generate-btn" onclick="generateQC()">Generate QC</button>
         <div id="output"></div>
@@ -231,72 +254,72 @@
             <p>To ensure the best results, please follow these guidelines when preparing your ZIP folder:</p>
             <ol>
                 <li>Place your main model file (.smd) in the root of the ZIP folder or in a subdirectory.</li>
-                <li>Name your main model file "model.smd" or "[model_name].smd" (case-sensitive).</li>
-                <li>Put your animation files (.smd) in an "anims" folder within the ZIP.</li>
-                <li>Name your animation files descriptively (e.g., "idle.smd", "walk.smd", "attack.smd").</li>
-                <li>Include any texture files (.vtf, .vmt) in a subfolder named "textures".</li>
-                <li>If you have physics models, name them "physics.smd" or "physics_1.smd", "physics_2.smd", etc.</li>
-                <li>Optionally, include a "config.json" file in the root to specify additional parameters.</li>
+                <li>Name your main model file &quot;model.smd&quot; or &quot;[model_name].smd&quot; (case-sensitive).</li>
+                <li>Put your animation files (.smd) in an &quot;anims&quot; folder within the ZIP.</li>
+                <li>Name your animation files descriptively (e.g., &quot;idle.smd&quot;, &quot;walk.smd&quot;, &quot;attack.smd&quot;).</li>
+                <li>Include any texture files (.vtf, .vmt) in a subfolder named &quot;textures&quot;.</li>
+                <li>If you have physics models, name them &quot;physics.smd&quot; or &quot;physics_1.smd&quot;, &quot;physics_2.smd&quot;, etc.</li>
+                <li>Optionally, include a &quot;config.json&quot; file in the root to specify additional parameters.</li>
             </ol>
         </div>
 
         <div class="guide">
             <h2>Example config.json File</h2>
-            <p>You can include a config.json file in the root of your ZIP to specify additional parameters for your model. Here's an example of how to structure this file:</p>
+            <p>You can include a config.json file in the root of your ZIP to specify additional parameters for your model. Here&apos;s an example of how to structure this file:</p>
             <pre><code>{
-    "modelname": "example_model",
-    "scale": 1.0,
-    "eyeposition": [0, 0, 65],
-    "surfaceprop": "flesh",
-    "staticprop": true,
-    "cdmaterials": ["models/example_model", "models/shared"],
-    "bodygroups": [
+    &quot;modelname&quot;: &quot;example_model&quot;,
+    &quot;scale&quot;: 1.0,
+    &quot;eyeposition&quot;: [0, 0, 65],
+    &quot;surfaceprop&quot;: &quot;flesh&quot;,
+    &quot;staticprop&quot;: true,
+    &quot;cdmaterials&quot;: [&quot;models/example_model&quot;, &quot;models/shared&quot;],
+    &quot;bodygroups&quot;: [
         {
-            "name": "hat",
-            "models": [
-                "hat_model1.smd",
-                "hat_model2.smd",
-                "hat_model3.smd"
+            &quot;name&quot;: &quot;hat&quot;,
+            &quot;models&quot;: [
+                &quot;hat_model1.smd&quot;,
+                &quot;hat_model2.smd&quot;,
+                &quot;hat_model3.smd&quot;
             ]
         },
         {
-            "name": "accessories",
-            "models": [
-                "glasses.smd",
-                "necklace.smd"
+            &quot;name&quot;: &quot;accessories&quot;,
+            &quot;models&quot;: [
+                &quot;glasses.smd&quot;,
+                &quot;necklace.smd&quot;
             ]
         }
     ],
-    "texturegroup": {
-        "skinfamilies": [
-            ["main_texture", "skin1"],
-            ["alt_texture", "skin2"]
+    &quot;texturegroup&quot;: {
+        &quot;skinfamilies&quot;: [
+            [&quot;main_texture&quot;, &quot;skin1&quot;],
+            [&quot;alt_texture&quot;, &quot;skin2&quot;]
         ]
     },
-    "animations": [
+    &quot;animations&quot;: [
         {
-            "name": "idle",
-            "fps": 30,
-            "loop": true
+            &quot;name&quot;: &quot;idle&quot;,
+            &quot;fps&quot;: 30,
+            &quot;loop&quot;: true
         },
         {
-            "name": "walk",
-            "fps": 60,
-            "loop": true,
-            "blend": {
-                "delta": true,
-                "type": "poseparameter",
-                "range": [0, 1],
-                "poseparameter": "move_x"
+            &quot;name&quot;: &quot;walk&quot;,
+            &quot;fps&quot;: 60,
+            &quot;loop&quot;: true,
+            &quot;blend&quot;: {
+                &quot;delta&quot;: true,
+                &quot;type&quot;: &quot;poseparameter&quot;,
+                &quot;range&quot;: [0, 1],
+                &quot;poseparameter&quot;: &quot;move_x&quot;
             }
         }
     ],
-    "collisionmodel": {
-        "mass": 85,
-        "inertia": 10,
-        "damping": 0.01,
-        "rotdamping": 1.5,
-        "rootbone": "pelvis"
+    &quot;collisionmodel&quot;: {
+        &quot;mass&quot;: 85,
+        &quot;inertia&quot;: 10,
+        &quot;damping&quot;: 0.01,
+        &quot;rotdamping&quot;: 1.5,
+        &quot;rootbone&quot;: &quot;pelvis&quot;
     }
 }</code></pre>
             <p>This config.json file allows you to specify various model parameters, animation details, and physics properties. The generator will use these values to create a more detailed and customized .qc file.</p>
@@ -332,481 +355,485 @@
     </a>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
-    <script>
-        let zipContent = null;
-        let detectedModels = [];
-        let detectedTextures = [];
-        let detectedAnimations = [];
-
-        document.getElementById('file-input').addEventListener('change', handleFileSelect);
-
-        async function handleFileSelect(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    zipContent = e.target.result;
-                    await scanZipForModels(zipContent);
-                };
-                reader.readAsArrayBuffer(file);
-            }
-        }
-
-        async function scanZipForModels(data) {
-            const zip = await JSZip.loadAsync(data);
-            const files = Object.keys(zip.files);
-            
-            detectedModels = files.filter(file => 
-                file.toLowerCase().endsWith('.smd') && 
-                !file.toLowerCase().includes('anims/') &&
-                !file.toLowerCase().includes('physics')
-            ).map(file => ({
-                name: file.split('/').pop().split('.')[0],
-                path: file
-            }));
-
-            detectedTextures = files.filter(file => 
-                file.toLowerCase().includes('textures/') &&
-                (file.toLowerCase().endsWith('.vtf') || file.toLowerCase().endsWith('.vmt'))
-            );
-
-            detectedAnimations = files.filter(file => 
-                file.toLowerCase().startsWith('anims/') && 
-                file.toLowerCase().endsWith('.smd')
-            );
-
-            displayModelList();
-            displayBodyGroups();
-            displaySkins();
-            displayAnimations();
-        }
-
-        function displayTextureList(container) {
-            container.innerHTML = '';
-            detectedTextures.forEach((texture, index) => {
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.id = `texture-${index}`;
-                checkbox.value = texture;
-
-                const label = document.createElement('label');
-                label.htmlFor = `texture-${index}`;
-                label.textContent = texture.split('/').pop();
-
-                container.appendChild(checkbox);
-                container.appendChild(label);
-                container.appendChild(document.createElement('br'));
-            });
-        }
-
-        function displayModelList() {
-            const modelList = document.getElementById('model-list');
-            const modelCheckboxes = document.getElementById('model-checkboxes');
-            modelCheckboxes.innerHTML = '';
-
-            detectedModels.forEach((model, index) => {
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.id = `model-${index}`;
-                checkbox.value = model.path;
-
-                const label = document.createElement('label');
-                label.htmlFor = `model-${index}`;
-                label.textContent = model.name;
-
-                modelCheckboxes.appendChild(checkbox);
-                modelCheckboxes.appendChild(label);
-                modelCheckboxes.appendChild(document.createElement('br'));
-            });
-
-            modelList.style.display = 'block';
-        }
-
-        function displayBodyGroups() {
-            const bodyGroupsDiv = document.getElementById('body-groups');
-            bodyGroupsDiv.innerHTML = '';
-
-            const addBodyGroupBtn = document.createElement('button');
-            addBodyGroupBtn.textContent = 'Add Body Group';
-            addBodyGroupBtn.className = 'add-btn';
-            addBodyGroupBtn.onclick = addBodyGroup;
-            bodyGroupsDiv.appendChild(addBodyGroupBtn);
-        }
-
-        function addRemoveButton(container) {
-            const removeBtn = document.createElement('button');
-            removeBtn.textContent = 'X';
-            removeBtn.className = 'remove-btn';
-            removeBtn.onclick = function() {
-                container.remove();
-            };
-            container.appendChild(removeBtn);
-        }
-
-        function addBodyGroup() {
-            const bodyGroupsDiv = document.getElementById('body-groups');
-            const groupDiv = document.createElement('div');
-            groupDiv.className = 'body-group';
-
-            const nameInput = document.createElement('input');
-            nameInput.type = 'text';
-            nameInput.placeholder = 'Body Group Name';
-            groupDiv.appendChild(nameInput);
-
-            const modelsSelect = document.createElement('select');
-            modelsSelect.multiple = true;
-            detectedModels.forEach(model => {
-                const option = document.createElement('option');
-                option.value = model.path;
-                option.textContent = model.name;
-                modelsSelect.appendChild(option);
-            });
-            groupDiv.appendChild(modelsSelect);
-
-            addRemoveButton(groupDiv);
-            bodyGroupsDiv.insertBefore(groupDiv, bodyGroupsDiv.lastChild);
-        }
-
-        function displaySkins() {
-            const skinsDiv = document.getElementById('skins');
-            skinsDiv.innerHTML = '';
-
-            const addSkinBtn = document.createElement('button');
-            addSkinBtn.textContent = 'Add Skin';
-            addSkinBtn.className = 'add-btn';
-            addSkinBtn.onclick = addSkin;
-            skinsDiv.appendChild(addSkinBtn);
-        }
-
-        function addSkin() {
-            const skinsDiv = document.getElementById('skins');
-            const skinDiv = document.createElement('div');
-            skinDiv.className = 'skin';
-
-            const nameInput = document.createElement('input');
-            nameInput.type = 'text';
-            nameInput.placeholder = 'Skin Name';
-            skinDiv.appendChild(nameInput);
-
-            const texturesContainer = document.createElement('div');
-            texturesContainer.className = 'textures-container';
-            displayTextureList(texturesContainer);
-            skinDiv.appendChild(texturesContainer);
-
-            addRemoveButton(skinDiv);
-            skinsDiv.insertBefore(skinDiv, skinsDiv.lastChild);
-        }
-
-        function displayAnimations() {
-            const animationsDiv = document.getElementById('animations');
-            animationsDiv.innerHTML = '';
-
-            const addAnimationBtn = document.createElement('button');
-            addAnimationBtn.textContent = 'Add Animation';
-            addAnimationBtn.className = 'add-btn';
-            addAnimationBtn.onclick = addAnimation;
-            animationsDiv.appendChild(addAnimationBtn);
-        }
-
-        function addAnimation() {
-            const animationsDiv = document.getElementById('animations');
-            const animDiv = document.createElement('div');
-            animDiv.className = 'animation';
-
-            const nameSelect = document.createElement('select');
-            nameSelect.className = 'anim-select';
-            const defaultOption = document.createElement('option');
-            defaultOption.text = 'Select Animation';
-            defaultOption.value = '';
-            nameSelect.appendChild(defaultOption);
-
-            const animationFiles = detectedAnimations.map(file => file.split('/').pop());
-            animationFiles.forEach(file => {
-                const option = document.createElement('option');
-                option.value = file;
-                option.textContent = file.split('.')[0];
-                nameSelect.appendChild(option);
-            });
-            animDiv.appendChild(nameSelect);
-
-            const fpsInput = document.createElement('input');
-            fpsInput.type = 'number';
-            fpsInput.placeholder = 'FPS';
-            fpsInput.className = 'anim-input';
-            animDiv.appendChild(fpsInput);
-
-            const loopCheckbox = document.createElement('input');
-            loopCheckbox.type = 'checkbox';
-            loopCheckbox.id = `loop-${Date.now()}`;
-            const loopLabel = document.createElement('label');
-            loopLabel.htmlFor = loopCheckbox.id;
-            loopLabel.textContent = 'Loop';
-            animDiv.appendChild(loopCheckbox);
-            animDiv.appendChild(loopLabel);
-
-            const blendCheckbox = document.createElement('input');
-            blendCheckbox.type = 'checkbox';
-            blendCheckbox.id = `blend-${Date.now()}`;
-            blendCheckbox.className = 'blend-checkbox';
-            const blendLabel = document.createElement('label');
-            blendLabel.htmlFor = blendCheckbox.id;
-            blendLabel.textContent = 'Use Blend';
-            animDiv.appendChild(blendCheckbox);
-            animDiv.appendChild(blendLabel);
-
-            const blendDiv = document.createElement('div');
-            blendDiv.className = 'blend-options';
-            blendDiv.style.display = 'none';
-
-            const blendTypeSelect = document.createElement('select');
-            blendTypeSelect.innerHTML = `
+    <script>let zipContent = null;
+let detectedModels = [];
+let detectedTextures = [];
+let detectedAnimations = [];
+let detectedVTA = [];
+const GMOD_PLAYER_ANIMS = ['idle_all_01', 'menu_walk', 'run_all', 'walk_all', 'pose_standing_01', 'pose_standing_02', 'pose_ducking_01', 'sit', 'sit_zen', 'swim_idle', 'taunt_dance', 'taunt_laugh', 'taunt_muscle', 'taunt_persistence', 'taunt_robot'];
+const GMOD_VIEWMODEL_ANIMS = ['idle01', 'fire01', 'draw', 'holster', 'sprint', 'idle_crouch', 'idle_iron', 'fire_iron'];
+document.getElementById('file-input').addEventListener('change', handleFileSelect);
+async function handleFileSelect(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = async function (e) {
+      zipContent = e.target.result;
+      await scanZipForModels(zipContent);
+    };
+    reader.readAsArrayBuffer(file);
+  }
+}
+async function scanZipForModels(data) {
+  const zip = await JSZip.loadAsync(data);
+  const files = Object.keys(zip.files);
+  detectedModels = files.filter(file => file.toLowerCase().endsWith('.smd') && !file.toLowerCase().includes('anims/') && !file.toLowerCase().includes('physics')).map(file => ({
+    name: file.split('/').pop().split('.')[0],
+    path: file
+  }));
+  detectedTextures = files.filter(file => file.toLowerCase().includes('textures/') && (file.toLowerCase().endsWith('.vtf') || file.toLowerCase().endsWith('.vmt')));
+  detectedAnimations = files.filter(file => file.toLowerCase().startsWith('anims/') && file.toLowerCase().endsWith('.smd'));
+  detectedVTA = files.filter(file => file.toLowerCase().endsWith('.vta'));
+  displayModelList();
+  displayBodyGroups();
+  displaySkins();
+  displayAnimations();
+}
+function displayTextureList(container) {
+  container.innerHTML = '';
+  detectedTextures.forEach((texture, index) => {
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.id = `texture-${index}`;
+    checkbox.value = texture;
+    const label = document.createElement('label');
+    label.htmlFor = `texture-${index}`;
+    label.textContent = texture.split('/').pop();
+    container.appendChild(checkbox);
+    container.appendChild(label);
+    container.appendChild(document.createElement('br'));
+  });
+}
+function displayModelList() {
+  const modelList = document.getElementById('model-list');
+  const modelCheckboxes = document.getElementById('model-checkboxes');
+  modelCheckboxes.innerHTML = '';
+  detectedModels.forEach((model, index) => {
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.id = `model-${index}`;
+    checkbox.value = model.path;
+    const label = document.createElement('label');
+    label.htmlFor = `model-${index}`;
+    label.textContent = model.name;
+    modelCheckboxes.appendChild(checkbox);
+    modelCheckboxes.appendChild(label);
+    modelCheckboxes.appendChild(document.createElement('br'));
+  });
+  modelList.style.display = 'block';
+}
+function displayBodyGroups() {
+  const bodyGroupsDiv = document.getElementById('body-groups');
+  bodyGroupsDiv.innerHTML = '';
+  const addBodyGroupBtn = document.createElement('button');
+  addBodyGroupBtn.textContent = 'Add Body Group';
+  addBodyGroupBtn.className = 'add-btn';
+  addBodyGroupBtn.onclick = addBodyGroup;
+  bodyGroupsDiv.appendChild(addBodyGroupBtn);
+}
+function addRemoveButton(container) {
+  const removeBtn = document.createElement('button');
+  removeBtn.textContent = 'X';
+  removeBtn.className = 'remove-btn';
+  removeBtn.onclick = function () {
+    container.remove();
+  };
+  container.appendChild(removeBtn);
+}
+function addBodyGroup() {
+  const bodyGroupsDiv = document.getElementById('body-groups');
+  const groupDiv = document.createElement('div');
+  groupDiv.className = 'body-group';
+  const nameInput = document.createElement('input');
+  nameInput.type = 'text';
+  nameInput.placeholder = 'Body Group Name';
+  groupDiv.appendChild(nameInput);
+  const modelsSelect = document.createElement('select');
+  modelsSelect.multiple = true;
+  detectedModels.forEach(model => {
+    const option = document.createElement('option');
+    option.value = model.path;
+    option.textContent = model.name;
+    modelsSelect.appendChild(option);
+  });
+  groupDiv.appendChild(modelsSelect);
+  addRemoveButton(groupDiv);
+  bodyGroupsDiv.insertBefore(groupDiv, bodyGroupsDiv.lastChild);
+}
+function displaySkins() {
+  const skinsDiv = document.getElementById('skins');
+  skinsDiv.innerHTML = '';
+  const addSkinBtn = document.createElement('button');
+  addSkinBtn.textContent = 'Add Skin';
+  addSkinBtn.className = 'add-btn';
+  addSkinBtn.onclick = addSkin;
+  skinsDiv.appendChild(addSkinBtn);
+}
+function addSkin() {
+  const skinsDiv = document.getElementById('skins');
+  const skinDiv = document.createElement('div');
+  skinDiv.className = 'skin';
+  const nameInput = document.createElement('input');
+  nameInput.type = 'text';
+  nameInput.placeholder = 'Skin Name';
+  skinDiv.appendChild(nameInput);
+  const texturesContainer = document.createElement('div');
+  texturesContainer.className = 'textures-container';
+  displayTextureList(texturesContainer);
+  skinDiv.appendChild(texturesContainer);
+  addRemoveButton(skinDiv);
+  skinsDiv.insertBefore(skinDiv, skinsDiv.lastChild);
+}
+function displayAnimations() {
+  const animationsDiv = document.getElementById('animations');
+  animationsDiv.innerHTML = '';
+  const addAnimationBtn = document.createElement('button');
+  addAnimationBtn.textContent = 'Add Animation';
+  addAnimationBtn.className = 'add-btn';
+  addAnimationBtn.onclick = addAnimation;
+  animationsDiv.appendChild(addAnimationBtn);
+}
+function addAnimation() {
+  const animationsDiv = document.getElementById('animations');
+  const animDiv = document.createElement('div');
+  animDiv.className = 'animation';
+  const nameSelect = document.createElement('select');
+  nameSelect.className = 'anim-select';
+  const defaultOption = document.createElement('option');
+  defaultOption.text = 'Select Animation';
+  defaultOption.value = '';
+  nameSelect.appendChild(defaultOption);
+  const animationFiles = detectedAnimations.map(file => file.split('/').pop());
+  animationFiles.forEach(file => {
+    const option = document.createElement('option');
+    option.value = file;
+    option.textContent = file.split('.')[0];
+    nameSelect.appendChild(option);
+  });
+  animDiv.appendChild(nameSelect);
+  const fpsInput = document.createElement('input');
+  fpsInput.type = 'number';
+  fpsInput.placeholder = 'FPS';
+  fpsInput.className = 'anim-input';
+  animDiv.appendChild(fpsInput);
+  const loopCheckbox = document.createElement('input');
+  loopCheckbox.type = 'checkbox';
+  loopCheckbox.id = `loop-${Date.now()}`;
+  const loopLabel = document.createElement('label');
+  loopLabel.htmlFor = loopCheckbox.id;
+  loopLabel.textContent = 'Loop';
+  animDiv.appendChild(loopCheckbox);
+  animDiv.appendChild(loopLabel);
+  const blendCheckbox = document.createElement('input');
+  blendCheckbox.type = 'checkbox';
+  blendCheckbox.id = `blend-${Date.now()}`;
+  blendCheckbox.className = 'blend-checkbox';
+  const blendLabel = document.createElement('label');
+  blendLabel.htmlFor = blendCheckbox.id;
+  blendLabel.textContent = 'Use Blend';
+  animDiv.appendChild(blendCheckbox);
+  animDiv.appendChild(blendLabel);
+  const blendDiv = document.createElement('div');
+  blendDiv.className = 'blend-options';
+  blendDiv.style.display = 'none';
+  const blendTypeSelect = document.createElement('select');
+  blendTypeSelect.innerHTML = `
                 <option value="poseparameter">Pose Parameter</option>
                 <option value="delta">Delta</option>
             `;
-            blendDiv.appendChild(blendTypeSelect);
-
-            const poseParamInput = document.createElement('input');
-            poseParamInput.type = 'text';
-            poseParamInput.placeholder = 'Pose Parameter';
-            blendDiv.appendChild(poseParamInput);
-
-            const rangeStartInput = document.createElement('input');
-            rangeStartInput.type = 'number';
-            rangeStartInput.placeholder = 'Range Start';
-            blendDiv.appendChild(rangeStartInput);
-
-            const rangeEndInput = document.createElement('input');
-            rangeEndInput.type = 'number';
-            rangeEndInput.placeholder = 'Range End';
-            blendDiv.appendChild(rangeEndInput);
-
-            animDiv.appendChild(blendDiv);
-
-            blendCheckbox.addEventListener('change', function() {
-                blendDiv.style.display = this.checked ? 'block' : 'none';
-            });
-
-            addRemoveButton(animDiv);
-            animationsDiv.insertBefore(animDiv, animationsDiv.lastChild);
+  blendDiv.appendChild(blendTypeSelect);
+  const poseParamInput = document.createElement('input');
+  poseParamInput.type = 'text';
+  poseParamInput.placeholder = 'Pose Parameter';
+  blendDiv.appendChild(poseParamInput);
+  const rangeStartInput = document.createElement('input');
+  rangeStartInput.type = 'number';
+  rangeStartInput.placeholder = 'Range Start';
+  blendDiv.appendChild(rangeStartInput);
+  const rangeEndInput = document.createElement('input');
+  rangeEndInput.type = 'number';
+  rangeEndInput.placeholder = 'Range End';
+  blendDiv.appendChild(rangeEndInput);
+  animDiv.appendChild(blendDiv);
+  blendCheckbox.addEventListener('change', function () {
+    blendDiv.style.display = this.checked ? 'block' : 'none';
+  });
+  addRemoveButton(animDiv);
+  animationsDiv.insertBefore(animDiv, animationsDiv.lastChild);
+}
+function addPhysicsGroup() {
+  const physicsDiv = document.getElementById('physics-properties');
+  const groupDiv = document.createElement('div');
+  groupDiv.className = 'physics-group';
+  const inputs = [{
+    type: 'text',
+    placeholder: 'Physics Model (e.g., physics.smd)'
+  }, {
+    type: 'number',
+    placeholder: 'Mass'
+  }, {
+    type: 'number',
+    placeholder: 'Inertia'
+  }, {
+    type: 'number',
+    placeholder: 'Damping'
+  }, {
+    type: 'number',
+    placeholder: 'Rotational Damping'
+  }, {
+    type: 'text',
+    placeholder: 'Root Bone'
+  }];
+  inputs.forEach(input => {
+    const inputElem = document.createElement('input');
+    inputElem.type = input.type;
+    inputElem.placeholder = input.placeholder;
+    groupDiv.appendChild(inputElem);
+  });
+  addRemoveButton(groupDiv);
+  physicsDiv.insertBefore(groupDiv, physicsDiv.lastChild);
+}
+async function generateQC() {
+  if (!zipContent) {
+    alert("Please select a ZIP file first.");
+    return;
+  }
+  const selectedModels = Array.from(document.querySelectorAll('#model-checkboxes input:checked')).map(checkbox => detectedModels.find(model => model.path === checkbox.value));
+  if (selectedModels.length === 0) {
+    alert("Please select at least one model to generate QC file.");
+    return;
+  }
+  const qcFiles = await processZipFile(zipContent, selectedModels);
+  displayOutput(qcFiles);
+}
+async function processZipFile(data, selectedModels) {
+  const zip = await JSZip.loadAsync(data);
+  const files = Object.keys(zip.files);
+  let config = null;
+  if (files.includes('config.json')) {
+    const configContent = await zip.file('config.json').async('string');
+    config = JSON.parse(configContent);
+  }
+  const qcFiles = {};
+  for (const model of selectedModels) {
+    const animationFiles = files.filter(file => file.toLowerCase().startsWith('anims/') && file.toLowerCase().endsWith('.smd') || file.toLowerCase().endsWith('.smd') && !file.toLowerCase().includes('physics') && file !== model.path);
+    const physicsFiles = files.filter(file => file.toLowerCase().includes('physics') && file.toLowerCase().endsWith('.smd'));
+    const textureFiles = files.filter(file => file.toLowerCase().includes('textures/'));
+    qcFiles[model.name] = generateQCContent(model.name, model.path, animationFiles, physicsFiles, textureFiles, config);
+  }
+  return qcFiles;
+}
+function displayOutput(qcFiles) {
+  const outputDiv = document.getElementById('output');
+  outputDiv.innerHTML = '';
+  for (const [modelName, content] of Object.entries(qcFiles)) {
+    const modelDiv = document.createElement('div');
+    modelDiv.innerHTML = `<h3>${modelName}.qc</h3><pre><code>${content}</code></pre>`;
+    outputDiv.appendChild(modelDiv);
+  }
+  const copyBtn = document.getElementById('copy-btn');
+  copyBtn.style.display = 'inline-block';
+  copyBtn.onclick = function () {
+    const allContent = Object.entries(qcFiles).map(([name, content]) => `// ${name}.qc\n${content}`).join('\n\n');
+    navigator.clipboard.writeText(allContent).then(function () {
+      copyBtn.textContent = 'Copied!';
+      setTimeout(function () {
+        copyBtn.textContent = 'Copy to Clipboard';
+      }, 2000);
+    }, function (err) {
+      console.error('Could not copy text: ', err);
+    });
+  };
+}
+function generateQCContent(modelName, modelFile, animationFiles, physicsFiles, textureFiles, config) {
+  let qc = `// Generated with QCGen by F1dg3t\n\n`;
+  qc += `$modelname "${config?.modelname || modelName}.mdl"\n\n`;
+  if (config?.scale) {
+    qc += `$scale ${config.scale}\n\n`;
+  }
+  if (config?.eyeposition) {
+    qc += `$eyeposition ${config.eyeposition.join(' ')}\n\n`;
+  }
+  if (config?.surfaceprop) {
+    qc += `$surfaceprop "${config.surfaceprop}"\n\n`;
+  }
+  if (config?.staticprop) {
+    qc += `$staticprop\n\n`;
+  }
+  if (config?.cdmaterials) {
+    config.cdmaterials.forEach(material => {
+      qc += `$cdmaterials "${material}/"\n`;
+    });
+    qc += '\n';
+  } else if (textureFiles.length > 0) {
+    qc += `$cdmaterials "models/${modelName}/"\n\n`;
+  }
+  const bodyGroups = Array.from(document.querySelectorAll('.body-group')).map(group => ({
+    name: group.querySelector('input').value,
+    models: Array.from(group.querySelector('select').selectedOptions).map(option => option.value)
+  }));
+  if (bodyGroups.length > 0) {
+    bodyGroups.forEach(group => {
+      qc += `$bodygroup "${group.name}"\n{\n`;
+      group.models.forEach(model => {
+        qc += `\tstudio "${model}"\n`;
+      });
+      qc += `}\n\n`;
+    });
+  }
+  if (config?.texturegroup) {
+    qc += `$texturegroup "skinfamilies"\n{\n`;
+    config.texturegroup.skincategorized.forEach(skin => {
+      qc += `\t{ "${skin}" }\n`;
+    });
+    qc += `}\n\n`;
+  } else {
+    const skins = Array.from(document.querySelectorAll('.skin')).map(skinDiv => ({
+      name: skinDiv.querySelector('input').value,
+      textures: Array.from(skinDiv.querySelectorAll('.textures-container input:checked')).map(checkbox => checkbox.value)
+    }));
+    if (skins.length > 0) {
+      qc += `$texturegroup "skinfamilies"\n{\n`;
+      skins.forEach(skin => {
+        qc += `\t{ `;
+        skin.textures.forEach(texture => {
+          qc += `"${texture.split('/').pop().split('.')[0]}" `;
+        });
+        qc += `} // ${skin.name}\n`;
+      });
+      qc += `}\n\n`;
+    }
+  }
+  const animations = Array.from(document.querySelectorAll('.animation')).map(animDiv => ({
+    name: animDiv.querySelector('.anim-select').value.split('.')[0],
+    fps: animDiv.querySelector('.anim-input').value,
+    loop: animDiv.querySelector('input[type="checkbox"]').checked,
+    blend: animDiv.querySelector('.blend-checkbox').checked ? {
+      type: animDiv.querySelector('.blend-options select').value,
+      poseparameter: animDiv.querySelector('.blend-options input[placeholder="Pose Parameter"]').value,
+      range: [parseFloat(animDiv.querySelector('.blend-options input[placeholder="Range Start"]').value), parseFloat(animDiv.querySelector('.blend-options input[placeholder="Range End"]').value)]
+    } : null
+  }));
+  animations.forEach(anim => {
+    if (anim.name) {
+      qc += `$sequence "${anim.name}" {\n`;
+      qc += `\t"anims/${anim.name}.smd"\n`;
+      if (anim.fps) qc += `\tfps ${anim.fps}\n`;
+      if (anim.loop) qc += `\tloop\n`;
+      if (anim.blend) {
+        if (anim.blend.type === 'delta') {
+          qc += `\tdelta\n`;
         }
-
-        function addPhysicsGroup() {
-            const physicsDiv = document.getElementById('physics-properties');
-            const groupDiv = document.createElement('div');
-            groupDiv.className = 'physics-group';
-
-            const inputs = [
-                { type: 'text', placeholder: 'Physics Model (e.g., physics.smd)' },
-                { type: 'number', placeholder: 'Mass' },
-                { type: 'number', placeholder: 'Inertia' },
-                { type: 'number', placeholder: 'Damping' },
-                { type: 'number', placeholder: 'Rotational Damping' },
-                { type: 'text', placeholder: 'Root Bone' }
-            ];
-
-            inputs.forEach(input => {
-                const inputElem = document.createElement('input');
-                inputElem.type = input.type;
-                inputElem.placeholder = input.placeholder;
-                groupDiv.appendChild(inputElem);
-            });
-
-            addRemoveButton(groupDiv);
-            physicsDiv.insertBefore(groupDiv, physicsDiv.lastChild);
-        }
-
-        async function generateQC() {
-            if (!zipContent) {
-                alert("Please select a ZIP file first.");
-                return;
-            }
-
-            const selectedModels = Array.from(document.querySelectorAll('#model-checkboxes input:checked'))
-                .map(checkbox => detectedModels.find(model => model.path === checkbox.value));
-
-            if (selectedModels.length === 0) {
-                alert("Please select at least one model to generate QC file.");
-                return;
-            }
-
-            const qcFiles = await processZipFile(zipContent, selectedModels);
-            displayOutput(qcFiles);
-        }
-
-        async function processZipFile(data, selectedModels) {
-            const zip = await JSZip.loadAsync(data);
-            const files = Object.keys(zip.files);
-
-            let config = null;
-            if (files.includes('config.json')) {
-                const configContent = await zip.file('config.json').async('string');
-                config = JSON.parse(configContent);
-            }
-
-            const qcFiles = {};
-
-            for (const model of selectedModels) {
-                const animationFiles = files.filter(file => 
-                    (file.toLowerCase().startsWith('anims/') && file.toLowerCase().endsWith('.smd')) ||
-                    (file.toLowerCase().endsWith('.smd') && !file.toLowerCase().includes('physics') && file !== model.path)
-                );
-                const physicsFiles = files.filter(file => file.toLowerCase().includes('physics') && file.toLowerCase().endsWith('.smd'));
-                const textureFiles = files.filter(file => file.toLowerCase().includes('textures/'));
-
-                qcFiles[model.name] = generateQCContent(model.name, model.path, animationFiles, physicsFiles, textureFiles, config);
-            }
-
-            return qcFiles;
-        }
-
-        function displayOutput(qcFiles) {
-            const outputDiv = document.getElementById('output');
-            outputDiv.innerHTML = '';
-
-            for (const [modelName, content] of Object.entries(qcFiles)) {
-                const modelDiv = document.createElement('div');
-                modelDiv.innerHTML = `<h3>${modelName}.qc</h3><pre><code>${content}</code></pre>`;
-                outputDiv.appendChild(modelDiv);
-            }
-
-            const copyBtn = document.getElementById('copy-btn');
-            copyBtn.style.display = 'inline-block';
-            
-            copyBtn.onclick = function() {
-                const allContent = Object.entries(qcFiles).map(([name, content]) => `// ${name}.qc\n${content}`).join('\n\n');
-                navigator.clipboard.writeText(allContent).then(function() {
-                    copyBtn.textContent = 'Copied!';
-                    setTimeout(function() {
-                        copyBtn.textContent = 'Copy to Clipboard';
-                    }, 2000);
-                }, function(err) {
-                    console.error('Could not copy text: ', err);
-                });
-            };
-        }
-
-        function generateQCContent(modelName, modelFile, animationFiles, physicsFiles, textureFiles, config) {
-            let qc = `// Generated with QCGen by F1dg3t\n\n`;
-            qc += `$modelname "${config?.modelname || modelName}.mdl"\n\n`;
-            
-            if (config?.scale) {
-                qc += `$scale ${config.scale}\n\n`;
-            }
-
-            if (config?.eyeposition) {
-                qc += `$eyeposition ${config.eyeposition.join(' ')}\n\n`;
-            }
-
-            if (config?.surfaceprop) {
-                qc += `$surfaceprop "${config.surfaceprop}"\n\n`;
-            }
-
-            if (config?.staticprop) {
-                qc += `$staticprop\n\n`;
-            }
-
-            if (config?.cdmaterials) {
-                config.cdmaterials.forEach(material => {
-                    qc += `$cdmaterials "${material}/"\n`;
-                });
-                qc += '\n';
-            } else if (textureFiles.length > 0) {
-                qc += `$cdmaterials "models/${modelName}/"\n\n`;
-            }
-
-            const bodyGroups = Array.from(document.querySelectorAll('.body-group')).map(group => ({
-                name: group.querySelector('input').value,
-                models: Array.from(group.querySelector('select').selectedOptions).map(option => option.value)
-            }));
-
-            if (bodyGroups.length > 0) {
-                bodyGroups.forEach(group => {
-                    qc += `$bodygroup "${group.name}"\n{\n`;
-                    group.models.forEach(model => {
-                        qc += `\tstudio "${model}"\n`;
-                    });
-                    qc += `}\n\n`;
-                });
-            }
-
-            if (config?.texturegroup) {
-                qc += `$texturegroup "skinfamilies"\n{\n`;
-                config.texturegroup.skincategorized.forEach(skin => {
-                    qc += `\t{ "${skin}" }\n`;
-                });
-                qc += `}\n\n`;
-            } else {
-                const skins = Array.from(document.querySelectorAll('.skin')).map(skinDiv => ({
-                    name: skinDiv.querySelector('input').value,
-                    textures: Array.from(skinDiv.querySelectorAll('.textures-container input:checked')).map(checkbox => checkbox.value)
-                }));
-
-                if (skins.length > 0) {
-                    qc += `$texturegroup "skinfamilies"\n{\n`;
-                    skins.forEach(skin => {
-                        qc += `\t{ `;
-                        skin.textures.forEach(texture => {
-                            qc += `"${texture.split('/').pop().split('.')[0]}" `;
-                        });
-                        qc += `} // ${skin.name}\n`;
-                    });
-                    qc += `}\n\n`;
-                }
-            }
-
-            const animations = Array.from(document.querySelectorAll('.animation')).map(animDiv => ({
-                name: animDiv.querySelector('.anim-select').value.split('.')[0],
-                fps: animDiv.querySelector('.anim-input').value,
-                loop: animDiv.querySelector('input[type="checkbox"]').checked,
-                blend: animDiv.querySelector('.blend-checkbox').checked ? {
-                    type: animDiv.querySelector('.blend-options select').value,
-                    poseparameter: animDiv.querySelector('.blend-options input[placeholder="Pose Parameter"]').value,
-                    range: [
-                        parseFloat(animDiv.querySelector('.blend-options input[placeholder="Range Start"]').value),
-                        parseFloat(animDiv.querySelector('.blend-options input[placeholder="Range End"]').value)
-                    ]
-                } : null
-            }));
-
-            animations.forEach(anim => {
-                if (anim.name) {
-                    qc += `$sequence "${anim.name}" {\n`;
-                    qc += `\t"anims/${anim.name}.smd"\n`;
-                    if (anim.fps) qc += `\tfps ${anim.fps}\n`;
-                    if (anim.loop) qc += `\tloop\n`;
-                    if (anim.blend) {
-                        if (anim.blend.type === 'delta') {
-                            qc += `\tdelta\n`;
-                        }
-                        qc += `\tblend "${anim.blend.poseparameter}" ${anim.blend.range.join(' ')}\n`;
-                    }
-                    qc += `}\n\n`;
-                }
-            });
-
-            const physicsGroups = Array.from(document.querySelectorAll('.physics-group')).map(group => ({
-                model: group.querySelector('input[placeholder="Physics Model (e.g., physics.smd)"]').value,
-                mass: group.querySelector('input[placeholder="Mass"]').value,
-                inertia: group.querySelector('input[placeholder="Inertia"]').value,
-                damping: group.querySelector('input[placeholder="Damping"]').value,
-                rotdamping: group.querySelector('input[placeholder="Rotational Damping"]').value,
-                rootbone: group.querySelector('input[placeholder="Root Bone"]').value
-            }));
-
-            physicsGroups.forEach(physics => {
-                if (physics.model) {
-                    qc += `$collisionmodel "${physics.model}" {\n`;
-                    if (physics.mass) qc += `\t$mass ${physics.mass}\n`;
-                    if (physics.inertia) qc += `\t$inertia ${physics.inertia}\n`;
-                    if (physics.damping) qc += `\t$damping ${physics.damping}\n`;
-                    if (physics.rotdamping) qc += `\t$rotdamping ${physics.rotdamping}\n`;
-                    if (physics.rootbone) qc += `\t$rootbone "${physics.rootbone}"\n`;
-                    qc += `}\n\n`;
-                }
-            });
-
-            return qc;
-        }
-    </script>
+        qc += `\tblend "${anim.blend.poseparameter}" ${anim.blend.range.join(' ')}\n`;
+      }
+      qc += `}\n\n`;
+    }
+  });
+  const physicsGroups = Array.from(document.querySelectorAll('.physics-group')).map(group => ({
+    model: group.querySelector('input[placeholder="Physics Model (e.g., physics.smd)"]').value,
+    mass: group.querySelector('input[placeholder="Mass"]').value,
+    inertia: group.querySelector('input[placeholder="Inertia"]').value,
+    damping: group.querySelector('input[placeholder="Damping"]').value,
+    rotdamping: group.querySelector('input[placeholder="Rotational Damping"]').value,
+    rootbone: group.querySelector('input[placeholder="Root Bone"]').value
+  }));
+  physicsGroups.forEach(physics => {
+    if (physics.model) {
+      qc += `$collisionmodel "${physics.model}" {\n`;
+      if (physics.mass) qc += `\t$mass ${physics.mass}\n`;
+      if (physics.inertia) qc += `\t$inertia ${physics.inertia}\n`;
+      if (physics.damping) qc += `\t$damping ${physics.damping}\n`;
+      if (physics.rotdamping) qc += `\t$rotdamping ${physics.rotdamping}\n`;
+      if (physics.rootbone) qc += `\t$rootbone "${physics.rootbone}"\n`;
+      qc += `}\n\n`;
+    }
+  });
+  const morphs = Array.from(document.querySelectorAll('.morph-group')).map(group => ({
+    name: group.querySelector('input').value,
+    vta: group.querySelector('select').value
+  }));
+  morphs.forEach(morph => {
+    if (morph.name && morph.vta) {
+      qc += `$declaresequence "${morph.name}"\n`;
+      qc += `$vertexanimation { "${morph.vta}" }\n\n`;
+    }
+  });
+  const gmodAnims = Array.from(document.querySelectorAll('.gmod-anim-group')).map(group => ({
+    gmodAnim: group.querySelector('select:first-child').value,
+    smdFile: group.querySelector('select:last-child').value
+  }));
+  gmodAnims.forEach(anim => {
+    if (anim.gmodAnim && anim.smdFile) {
+      qc += `$sequence "${anim.gmodAnim}" {\n`;
+      qc += `\t"${anim.smdFile}"\n`;
+      qc += `\tactivity "ACT_${anim.gmodAnim.toUpperCase()}" 1\n`;
+      qc += `\tfadein 0.2\n`;
+      qc += `\tfadeout 0.2\n`;
+      qc += `}\n\n`;
+    }
+  });
+  return qc;
+}
+function addMorph() {
+  const morphsDiv = document.getElementById('morphs');
+  const morphDiv = document.createElement('div');
+  morphDiv.className = 'morph-group';
+  const nameInput = document.createElement('input');
+  nameInput.type = 'text';
+  nameInput.placeholder = 'Morph Target Name';
+  morphDiv.appendChild(nameInput);
+  const vtaSelect = document.createElement('select');
+  vtaSelect.style.width = 'calc(100% - 20px)';
+  vtaSelect.style.marginTop = '5px';
+  const defaultOption = document.createElement('option');
+  defaultOption.text = 'Select VTA File';
+  defaultOption.value = '';
+  vtaSelect.appendChild(defaultOption);
+  detectedVTA.forEach(file => {
+    const option = document.createElement('option');
+    option.value = file;
+    option.textContent = file.split('/').pop();
+    vtaSelect.appendChild(option);
+  });
+  morphDiv.appendChild(vtaSelect);
+  addRemoveButton(morphDiv);
+  morphsDiv.insertBefore(morphDiv, morphsDiv.lastChild);
+}
+function addGModAnim() {
+  const gmodAnimList = document.getElementById('gmod-anim-list');
+  const animDiv = document.createElement('div');
+  animDiv.className = 'gmod-anim-group';
+  const gmodType = document.getElementById('gmod-type').value;
+  const animList = gmodType === 'player' ? GMOD_PLAYER_ANIMS : GMOD_VIEWMODEL_ANIMS;
+  const animSelect = document.createElement('select');
+  animSelect.style.width = 'calc(100% - 20px)';
+  const defaultOption = document.createElement('option');
+  defaultOption.text = 'Select Animation';
+  defaultOption.value = '';
+  animSelect.appendChild(defaultOption);
+  animList.forEach(anim => {
+    const option = document.createElement('option');
+    option.value = anim;
+    option.textContent = anim;
+    animSelect.appendChild(option);
+  });
+  animDiv.appendChild(animSelect);
+  const smdSelect = document.createElement('select');
+  smdSelect.style.width = 'calc(100% - 20px)';
+  smdSelect.style.marginTop = '5px';
+  const smdDefault = document.createElement('option');
+  smdDefault.text = 'Select SMD File';
+  smdDefault.value = '';
+  smdSelect.appendChild(smdDefault);
+  detectedAnimations.forEach(file => {
+    const option = document.createElement('option');
+    option.value = file;
+    option.textContent = file.split('/').pop();
+    smdSelect.appendChild(option);
+  });
+  animDiv.appendChild(smdSelect);
+  addRemoveButton(animDiv);
+  gmodAnimList.appendChild(animDiv);
+}</script>
 </body>
 </html>
