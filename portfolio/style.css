@@ -1,0 +1,220 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #3d3d3d;
+  color: #fff;
+}
+
+header {
+  background-color: #222;
+  color: #fff;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+}
+
+.logo img {
+  width: 50px;
+  margin-right: 10px;
+}
+
+nav {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 20px;
+}
+
+nav a:hover {
+  color: #ff0000;
+}
+
+#hero {
+  background-color: #333;
+  padding: 0px 20px;
+  text-align: center;
+  position: relative;
+  height: 600px;
+  overflow: hidden;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  pointer-events: none;
+}
+
+.hero-button {
+  position: relative;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.hero-content h2 {
+  font-size: 3em;
+  margin-bottom: 20px;
+}
+
+.hero-content p {
+  font-size: 1.2em;
+  line-height: 1.6;
+}
+
+.cta-button {
+  display: inline-block;
+  background-color: #ff0000;
+  color: #fff;
+  padding: 15px 30px;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: 30px;
+}
+
+.cta-button:hover {
+  background-color: #cc0000;
+}
+
+section {
+  padding: 50px 20px;
+}
+
+section h2 {
+  font-size: 2.5em;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+#about p {
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+#portfolio {
+  background-color: #222;
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.portfolio-item {
+  background-color: #333;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.portfolio-item a {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+}
+
+.portfolio-item a:hover {
+  color: #ff0000;
+}
+
+#contact {
+  background-color: #3d3d3d;
+}
+
+#contact form {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+#contact input,
+#contact textarea {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: none;
+  background-color: #444;
+  color: #fff;
+  border-radius: 5px;
+}
+
+#contact textarea {
+  resize: vertical;
+}
+
+#contact button {
+  background-color: #ff0000;
+  color: #fff;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#contact button:hover {
+  background-color: #cc0000;
+}
+
+footer {
+  background-color: #111;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Placeholder image style - replace with actual images */
+.portfolio-item img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  background-color: #555;
+}
+
+.hero-text-container {
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+
+.hero-text-container h2 {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-iframe-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#hero p {
+  position: relative;
+}

@@ -1,0 +1,222 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1dg3t's Models</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            background-color: #3d3d3d;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: #2a2a2a;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        header img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        .model-container {
+            background-color: #444;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            position: relative; 
+        }
+
+        .model-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .model-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        h2 {
+            color: #ff0000;
+            padding: 10px;
+            margin: 0;
+            text-align: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        h3 {
+            color: #fff;
+            padding: 10px;
+            margin: 0;
+            text-align: center;
+        }
+
+        .category-title {
+            width: 100%;
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: #ddd;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #aaa;
+            width: 100%;
+        }
+    </style>
+    <script>
+        /*function openModel(modelContainer) {
+            const iframe = modelContainer.querySelector('iframe');
+            const src = iframe.src;
+            const url = new URL(src);
+            url.searchParams.set('show_UI', 'true');
+            window.open(url.toString(), '_blank');
+        }*/
+    </script>
+</head>
+<body>
+
+    <header>
+        <img src="F1dg3t_Logo_Simple@4x.png" alt="F1dg3t Logo">
+        <h1>F1dg3t's Models</h1>
+    </header>
+
+    <main>
+        <section>
+            <h3 class="category-title">UNITY</h3>
+            <div class="model-grid">
+                <div class="model-container" style="height: 300px;">
+                    <h2>Modular Building</h2>
+                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2F712494a042a110defd9b82c56ecd4a9a6ac856b1%2Fmodels%2Funity%2FModular_Building_GLTF.glb&shaderMode=1&bones=false&show_UI=true" target="_blank">
+                        <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2F712494a042a110defd9b82c56ecd4a9a6ac856b1%2Fmodels%2Funity%2FModular_Building_GLTF.glb&shaderMode=1&bones=false&show_UI=false"></iframe>
+                    </a>
+                </div>
+
+                <div class="model-container" style="height: 300px;">
+                    <h2>Booth Gum</h2>
+                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2F712494a042a110defd9b82c56ecd4a9a6ac856b1%2Fmodels%2Funity%2FBoothGum.glb&shaderMode=0&bones=false&show_UI=true" target="_blank">
+                        <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2F712494a042a110defd9b82c56ecd4a9a6ac856b1%2Fmodels%2Funity%2FBoothGum.glb&shaderMode=0&bones=false&show_UI=false"></iframe>
+                    </a>
+                </div>
+
+                <div class="model-container" style="height: 300px;">
+                    <h2>Blue Guy</h2>
+                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FBlueGuy%2FTest.glb&shaderMode=1&bones=false&show_UI=true" target="_blank">
+                        <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FBlueGuy%2FTest.glb&shaderMode=1&bones=false&show_UI=false"></iframe>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 class="category-title">GAME MODELS</h3>
+            <div class="model-grid">
+                <div class="model-container" style="height: 300px;">
+                    <h2>City Objects</h2>
+                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHUVRC%2FcityObjects.glb&shaderMode=1&show_UI=true" target="_blank">
+                        <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHUVRC%2FcityObjects.glb&shaderMode=1&show_UI=false"></iframe>
+                    </a>
+                </div>
+
+                <div class="model-container" style="height: 300px;">
+                    <h2>Adam Lyre</h2>
+                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FAdam_Lyre.glb&shaderMode=0&bones=false&show_UI=true" target="_blank">
+                        <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FAdam_Lyre.glb&shaderMode=0&bones=false&show_UI=false"></iframe>
+                    </a>
+                </div>
+
+                <div class="model-container" style="height: 300px;">
+                    <h2>Cherry Bombs</h2>
+                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FCherry_Bombs.glb&shaderMode=1&show_UI=true" target="_blank">
+                        <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FCherry_Bombs.glb&shaderMode=1&show_UI=false"></iframe>
+                    </a>
+                </div>
+
+                <div class="model-container" style="height: 300px;">
+                    <h2>Cletus Bow</h2>
+                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FCletus_Bow.glb&shaderMode=1&show_UI=true" target="_blank">
+                        <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FCletus_Bow.glb&shaderMode=1&show_UI=false"></iframe>
+                    </a>
+                </div>
+
+                <div class="model-container" style="height: 300px;">
+                    <h2>Mox Gitar</h2>
+                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FMox_Gitar.glb&shaderMode=1&show_UI=true" target="_blank">
+                        <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FMox_Gitar.glb&shaderMode=1&show_UI=false"></iframe>
+                    </a>
+                </div>
+
+                <div class="model-container" style="height: 300px;">
+                    <h2>Striker Gitar</h2>
+                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FStriker_Gitar.glb&shaderMode=1&show_UI=true" target="_blank">
+                        <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FStriker_Gitar.glb&shaderMode=1&show_UI=false"></iframe>
+                    </a>
+                </div>
+
+                <div class="model-container" style="height: 300px;">
+                    <h2>Verosica Wings</h2>
+                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FVerosica%2520Wings.glb&shaderMode=1&show_UI=true" target="_blank">
+                        <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FVerosica%2520Wings.glb&shaderMode=1&show_UI=false"></iframe>
+                    </a>
+                </div>
+
+                <div class="model-container" style="height: 300px;">
+                    <h2>Tent</h2>
+                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2Ftent.glb&shaderMode=1&show_UI=true" target="_blank">
+                        <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2Ftent.glb&shaderMode=1&show_UI=false"></iframe>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 class="category-title">BLENDER</h3>
+            <div class="model-grid">
+                <div class="model-container" style="height: 300px;">
+                    <h2>Skateboard</h2>
+                     <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2Fskateboard%2Fskateboard.glb&shaderMode=1&show_UI=true" target="_blank">
+                        <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2Fskateboard%2Fskateboard.glb&shaderMode=1&show_UI=false"></iframe>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 F1dg3t's Models</p>
+    </footer>
+
+</body>
+</html>
