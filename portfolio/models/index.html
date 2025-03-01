@@ -50,7 +50,11 @@
         }
 
         .model-container:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            transform: scale(1.1);
+            border: #fff solid 2px;
+            border-radius: 10px;
+            z-index: 500;
         }
 
         .model-container iframe {
@@ -70,6 +74,7 @@
             position: absolute;
             top: 0;
             left: 0;
+            text-decoration: none; /* Remove underline from the <a> tag */
         }
 
         h2 {
@@ -112,16 +117,86 @@
             padding: 10px 15px;
             border: none;
             cursor: pointer;
+            position: absolute;
+            bottom: 10px; /* Adjusted for better positioning */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2; /* Ensure button is above the iframe */
+        }
+
+        /* Popup styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow: auto; /* Enable scroll if content is too long */
+        }
+
+        .popup-content {
+            position: relative;
+            background-color: #fefefe;
+            margin: 5% auto; /* Adjusted margin for better centering */
+            padding: 10px;
+            border: 1px solid #888;
+            width: 100%;
+            max-width: 1280px; /* Limiting maximum width */
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+            animation-name: animatetop;
+            animation-duration: 0.4s
+        }
+
+        /* Add Animation */
+        @-webkit-keyframes animatetop {
+            from {top:-300px; opacity:0}
+            to {top:0; opacity:1}
+        }
+
+        @keyframes animatetop {
+            from {top:-300px; opacity:0}
+            to {top:0; opacity:1}
+        }
+
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #ffffff;
+            background-color: #ff0000;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 2px solid #ffffff;
+            border-radius: 5px;
+            padding: 0 5px;
+        }
+
+        .popup-iframe {
+            width: 100%;
+            height: 80vh; /* Use viewport height for dynamic sizing */
+            border: none;
         }
     </style>
     <script>
-        /*function openModel(modelContainer) {
-            const iframe = modelContainer.querySelector('iframe');
-            const src = iframe.src;
-            const url = new URL(src);
-            url.searchParams.set('show_UI', 'true');
-            window.open(url.toString(), '_blank');
-        }*/
+        function openModel(modelUrl) {
+            const popup = document.getElementById('modelPopup');
+            const popupIframe = document.getElementById('popupIframe');
+
+            popupIframe.src = modelUrl;
+            popup.style.display = "block";
+        }
+
+        function closePopup() {
+            const popup = document.getElementById('modelPopup');
+            popup.style.display = "none";
+            const popupIframe = document.getElementById('popupIframe');
+            popupIframe.src = ""; // Clear the iframe source
+        }
     </script>
 </head>
 <body>
@@ -138,25 +213,19 @@
                 <div class="model-container" style="height: 300px;">
                     <h2>Modular Building</h2>
                     <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2F712494a042a110defd9b82c56ecd4a9a6ac856b1%2Fmodels%2Funity%2FModular_Building_GLTF.glb&shaderMode=1&bones=false&show_UI=false"></iframe>
-                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2F712494a042a110defd9b82c56ecd4a9a6ac856b1%2Fmodels%2Funity%2FModular_Building_GLTF.glb&shaderMode=1&bones=false&show_UI=true" target="_blank">
-                        <button class="open-button">Open</button>
-                    </a>
+                    <button class="open-button" onclick="openModel('https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2F712494a042a110defd9b82c56ecd4a9a6ac856b1%2Fmodels%2Funity%2FModular_Building_GLTF.glb&shaderMode=1&bones=false&show_UI=true')">Open</button>
                 </div>
 
                 <div class="model-container" style="height: 300px;">
                     <h2>Booth Gum</h2>
                     <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2F712494a042a110defd9b82c56ecd4a9a6ac856b1%2Fmodels%2Funity%2FBoothGum.glb&shaderMode=0&bones=false&show_UI=false"></iframe>
-                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2F712494a042a110defd9b82c56ecd4a9a6ac856b1%2Fmodels%2Funity%2FBoothGum.glb&shaderMode=0&bones=false&show_UI=true" target="_blank">
-                        <button class="open-button">Open</button>
-                    </a>
+                    <button class="open-button" onclick="openModel('https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2F712494a042a110defd9b82c56ecd4a9a6ac856b1%2Fmodels%2Funity%2FBoothGum.glb&shaderMode=0&bones=false&show_UI=true')">Open</button>
                 </div>
 
                 <div class="model-container" style="height: 300px;">
                     <h2>Blue Guy</h2>
                     <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FBlueGuy%2FTest.glb&shaderMode=1&bones=false&show_UI=false"></iframe>
-                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FBlueGuy%2FTest.glb&shaderMode=1&bones=false&show_UI=true" target="_blank">
-                        <button class="open-button">Open</button>
-                    </a>
+                    <button class="open-button" onclick="openModel('https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FBlueGuy%2FTest.glb&shaderMode=1&bones=false&show_UI=true')">Open</button>
                 </div>
             </div>
         </section>
@@ -167,65 +236,49 @@
                 <div class="model-container" style="height: 300px;">
                     <h2>City Objects</h2>
                     <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHUVRC%2FcityObjects.glb&shaderMode=1&show_UI=false"></iframe>
-                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHUVRC%2FcityObjects.glb&shaderMode=1&show_UI=true" target="_blank">
-                        <button class="open-button">Open</button>
-                    </a>
+                    <button class="open-button" onclick="openModel('https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHUVRC%2FcityObjects.glb&shaderMode=1&show_UI=true')">Open</button>
                 </div>
 
                 <div class="model-container" style="height: 300px;">
                     <h2>Adam Lyre</h2>
                     <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FAdam_Lyre.glb&shaderMode=0&bones=false&show_UI=false"></iframe>
-                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FAdam_Lyre.glb&shaderMode=0&bones=false&show_UI=true" target="_blank">
-                        <button class="open-button">Open</button>
-                    </a>
+                    <button class="open-button" onclick="openModel('https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FAdam_Lyre.glb&shaderMode=0&bones=false&show_UI=true')">Open</button>
                 </div>
 
                 <div class="model-container" style="height: 300px;">
                     <h2>Cherry Bombs</h2>
                     <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FCherry_Bombs.glb&shaderMode=1&show_UI=false"></iframe>
-                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FCherry_Bombs.glb&shaderMode=1&show_UI=true" target="_blank">
-                        <button class="open-button">Open</button>
-                    </a>
+                    <button class="open-button" onclick="openModel('https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FCherry_Bombs.glb&shaderMode=1&show_UI=true')">Open</button>
                 </div>
 
                 <div class="model-container" style="height: 300px;">
                     <h2>Cletus Bow</h2>
                     <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FCletus_Bow.glb&shaderMode=1&show_UI=false"></iframe>
-                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FCletus_Bow.glb&shaderMode=1&show_UI=true" target="_blank">
-                        <button class="open-button">Open</button>
-                    </a>
+                    <button class="open-button" onclick="openModel('https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FCletus_Bow.glb&shaderMode=1&show_UI=true')">Open</button>
                 </div>
 
                 <div class="model-container" style="height: 300px;">
                     <h2>Mox Gitar</h2>
                     <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FMox_Gitar.glb&shaderMode=1&show_UI=false"></iframe>
-                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FMox_Gitar.glb&shaderMode=1&show_UI=true" target="_blank">
-                        <button class="open-button">Open</button>
-                    </a>
+                    <button class="open-button" onclick="openModel('https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FMox_Gitar.glb&shaderMode=1&show_UI=true')">Open</button>
                 </div>
 
                 <div class="model-container" style="height: 300px;">
                     <h2>Striker Gitar</h2>
                     <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FStriker_Gitar.glb&shaderMode=1&show_UI=false"></iframe>
-                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FStriker_Gitar.glb&shaderMode=1&show_UI=true" target="_blank">
-                        <button class="open-button">Open</button>
-                    </a>
+                    <button class="open-button" onclick="openModel('https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FStriker_Gitar.glb&shaderMode=1&show_UI=true')">Open</button>
                 </div>
 
                 <div class="model-container" style="height: 300px;">
                     <h2>Verosica Wings</h2>
                     <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FVerosica%2520Wings.glb&shaderMode=1&show_UI=false"></iframe>
-                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FVerosica%2520Wings.glb&shaderMode=1&show_UI=true" target="_blank">
-                        <button class="open-button">Open</button>
-                    </a>
+                    <button class="open-button" onclick="openModel('https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2FVerosica%2520Wings.glb&shaderMode=1&show_UI=true')">Open</button>
                 </div>
 
                 <div class="model-container" style="height: 300px;">
                     <h2>Tent</h2>
                     <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2Ftent.glb&shaderMode=1&show_UI=false"></iframe>
-                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2Ftent.glb&shaderMode=1&show_UI=true" target="_blank">
-                        <button class="open-button">Open</button>
-                    </a>
+                    <button class="open-button" onclick="openModel('https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2FHURP%2Ftent.glb&shaderMode=1&show_UI=true')">Open</button>
                 </div>
             </div>
         </section>
@@ -236,9 +289,7 @@
                 <div class="model-container" style="height: 300px;">
                     <h2>Skateboard</h2>
                     <iframe src="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2Fskateboard%2Fskateboard.glb&shaderMode=1&show_UI=false"></iframe>
-                    <a href="https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2Fskateboard%2Fskateboard.glb&shaderMode=1&show_UI=true" target="_blank">
-                        <button class="open-button">Open</button>
-                    </a>
+                    <button class="open-button" onclick="openModel('https://f1dg3txd.github.io/GLB/viewer/?source=https%3A%2F%2Fgithub.com%2FF1dg3tXD%2FF1dg3tXD.github.io%2Fblob%2Fbeb6b65edf757e3e13f1330838b9209af23d2831%2Fmodels%2Fskateboard%2Fskateboard.glb&shaderMode=1&show_UI=true')">Open</button>
                 </div>
             </div>
         </section>
@@ -247,6 +298,15 @@
     <footer>
         <p>&copy; 2024 F1dg3t's Models</p>
     </footer>
+
+    <!-- The Modal -->
+    <div id="modelPopup" class="popup">
+        <!-- Modal content -->
+        <div class="popup-content">
+            <span class="close-button" onclick="closePopup()">&times;</span>
+            <iframe id="popupIframe" class="popup-iframe" src=""></iframe>
+        </div>
+    </div>
 
 </body>
 </html>
