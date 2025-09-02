@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voices of the Void Together - Easy Installer</title>
+    <link rel="icon" href="./img/icon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <meta content="VotV Together" property="og:title" />
+    <meta content="A modpack by F1dg3t" property="og:description" />
+    <meta content="https://f1dg3txd.github.io/games/VotV" property="og:url" />
+    <meta content="https://f1dg3txd.github.io/games/VotV/img/icon.png" property="og:image" />
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="256">
+    <meta property="og:image:height" content="256">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image:src" content="https://f1dg3txd.github.io/games/VotV/img/icon.png">
+    <meta content="#0fd6d0" data-react-helmet="true" name="theme-color" />
+</head>
+<body>
+    <div class="background-container">
+    <div class="background-image" id="bg1"></div>
+    <div class="background-image" id="bg2"></div>
+        <div class="overlay"></div>
+    </div>
+    
+    <div class="content">
+        <header class="header">
+            <h1 class="title">Voices of the Void</h1>
+            <h2 class="subtitle">Together Easy Installer</h2>
+        </header>
+        
+        <main class="main">
+            <div class="description">
+                <p>Experience the mysterious world of signal monitoring with friends. This easy installer sets up everything you need to play Voices of the Void Together.</p>
+            </div>
+            
+            <div class="download-section">
+                <a href="http://f1dg3t-xyz.duckdns.org/Z/Z/Games/VotV/VotV.exe" class="download-button" download>
+                    <span class="download-icon">⬇</span>
+                    Download Installer
+                </a>
+                <p class="download-info">One-click setup • Windows compatible • Latest version</p>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <p>Ready to monitor the signals together?</p>
+        </footer>
+    </div>
+</body>
+</html>
+<script>
+// List of BG images (update if you add/remove BG images)
+const bgImages = [
+    'img/BG0.png', 'img/BG1.png', 'img/BG2.png', 'img/BG3.png', 'img/BG4.png',
+    'img/BG5.png', 'img/BG6.png', 'img/BG7.png', 'img/BG8.png', 'img/BG9.png',
+    'img/BG10.png', 'img/BG11.png', 'img/BG12.png'
+];
+
+let current = 0;
+let showingFirst = true;
+const fadeDuration = 1000; // ms
+const displayDuration = 5000; // ms
+
+const bg1 = document.getElementById('bg1');
+const bg2 = document.getElementById('bg2');
+
+bg1.style.backgroundImage = `url('${bgImages[current]}')`;
+bg2.style.opacity = 0;
+
+function fadeToNext() {
+    const from = showingFirst ? bg1 : bg2;
+    const to = showingFirst ? bg2 : bg1;
+    const next = (current + 1) % bgImages.length;
+    // Preload next image
+    const img = new window.Image();
+    img.src = bgImages[next];
+    img.onload = () => {
+        // Set next image and prepare for crossfade
+        to.style.backgroundImage = `url('${bgImages[next]}')`;
+        to.style.opacity = 0;
+        to.style.transition = '';
+        from.style.transition = '';
+        // Force reflow to apply transition
+        void to.offsetWidth;
+        // Start crossfade
+        to.style.transition = `opacity ${fadeDuration}ms linear`;
+        from.style.transition = `opacity ${fadeDuration}ms linear`;
+        to.style.opacity = 1;
+        from.style.opacity = 1;
+        setTimeout(() => {
+            from.style.opacity = 0;
+            setTimeout(() => {
+                current = next;
+                showingFirst = !showingFirst;
+                setTimeout(fadeToNext, displayDuration);
+            }, fadeDuration);
+        }, 10); // allow to become visible before fading out from
+    };
+}
+
+setTimeout(fadeToNext, displayDuration);
+</script>
+</html>
+
